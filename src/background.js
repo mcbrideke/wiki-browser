@@ -105,3 +105,9 @@ if (isDevelopment) {
 ipcMain.on('close-me',()=>{
   win.close()
 })
+
+ipcMain.on('resize-view',(event, arg)=>{
+  let newBounds = { x: Math.floor(arg.x), y: Math.floor(arg.y), width: Math.floor(arg.width), height: Math.floor(arg.height) }
+  view.setBounds(newBounds)
+  //view.setBounds(arg)
+})

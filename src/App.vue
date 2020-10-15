@@ -6,18 +6,32 @@
     <button v-on:click="minimize"><i class="material-icons md-light">minimize</i></button>
     <button v-on:click="close"><i class="material-icons md-light">close</i></button>
   </nav>
-  <div id="search">
+  <div id="search" ref="search">
   </div>
 </template>
-
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
   mounted () {
+    window.addEventListener('resize', this.onResize)
+  },
+  beforeUnmount () {
+    // Unregister the event listener before destroying this Vue instance
+    window.removeEventListener('resize', this.onResize)
   },
   methods: {
+    onResize () {
+      const dimensions = {
+        x: document.getElementById('search').getBoundingClientRect().x,
+        y: document.getElementById('search').getBoundingClientRect().y,
+        width: document.getElementById('search').getBoundingClientRect().width,
+        height: document.getElementById('search').getBoundingClientRect().height
+      }
+      console.log(dimensions)
+      window.ipcRenderer.send('resize-view', dimensions)
+    },
     back () {
       this.$refs.view.goBack()
     },
