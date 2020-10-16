@@ -29,14 +29,14 @@ export default {
         width: document.getElementById('search').getBoundingClientRect().width,
         height: document.getElementById('search').getBoundingClientRect().height
       }
-      console.log(dimensions)
+      // console.log(dimensions)
       window.ipcRenderer.send('resize-view', dimensions)
     },
     back () {
-      this.$refs.view.goBack()
+      window.ipcRenderer.send('go-back')
     },
     forward () {
-      this.$refs.view.goForward()
+      window.ipcRenderer.send('go-forward')
     },
     note () {
       console.log('note')
@@ -45,7 +45,7 @@ export default {
       console.log('minimize')
     },
     close () {
-      window.ipcRenderer.send('close-me')
+      window.ipcRenderer.send('close-app')
     }
   }
   // components: {
@@ -57,6 +57,8 @@ export default {
 <style lang="scss">
 #app {
   height: 100%;
+  background-color: transparent;
+  opacity: 0.3;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -71,13 +73,7 @@ html, body {
   margin:0;
   height: 100%;
   box-sizing: border-box;
-}
-webview {
-  display:inline-flex;
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-  zoom: 0.3;
+  background-color: transparent;
 }
 #search {
   grid-area: item-content;
@@ -89,9 +85,6 @@ webview {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: black;
-  color: white;
-  opacity: 0.7;
 }
 .navbar button {
   -webkit-app-region: no-drag

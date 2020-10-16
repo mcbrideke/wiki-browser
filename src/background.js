@@ -22,11 +22,11 @@ async function createWindow () {
   win = new BrowserWindow({
     width: 600,
     height: 800,
+    backgroundColor: '#00000000',
     frame: false,
     alwaysOnTop: false,
     transparent: true,
     maximizable: false,
-    
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -102,12 +102,19 @@ if (isDevelopment) {
   }
 }
 
-ipcMain.on('close-me',()=>{
+ipcMain.on('close-app',()=>{
   win.close()
 })
 
 ipcMain.on('resize-view',(event, arg)=>{
   let newBounds = { x: Math.floor(arg.x), y: Math.floor(arg.y), width: Math.floor(arg.width), height: Math.floor(arg.height) }
   view.setBounds(newBounds)
-  //view.setBounds(arg)
+})
+
+ipcMain.on('go-back', ()=> {
+  view.webContents.goBack()
+})
+
+ipcMain.on('go-forward', ()=> {
+  view.webContents.goForward()
 })
