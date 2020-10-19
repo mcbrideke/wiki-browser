@@ -37,7 +37,7 @@ async function createWindow () {
     }
   })
   win.setBrowserView(view)
-  view.setBounds({ x: 0, y: 40, width: 600, height: 360 })
+  view.setBounds({ x: 50, y: 40, width: 550, height: 360 })
   view.setAutoResize({width:true, height:true, horizontal: true, vetical:true})
   view.webContents.loadURL('https://electronjs.org')
   view.webContents.setZoomFactor(0.8)
@@ -110,7 +110,7 @@ ipcMain.on('close-app',()=>{
 ipcMain.on('resize-view',(event, arg)=>{
   let newBounds = { x: Math.floor(arg.x), y: Math.floor(arg.y), width: Math.floor(arg.width), height: Math.floor(arg.height) }
   view.setBounds(newBounds)
-  view.webContents.setZoomFactor(0.8)
+  //view.webContents.setZoomFactor(0.8)
 })
 
 ipcMain.on('go-back', ()=> {

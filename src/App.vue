@@ -1,16 +1,24 @@
 <template>
   <nav class="toolbar">
-      <button v-on:click="back"><i class="material-icons md-light">arrow_back</i></button>
-      <button v-on:click="forward"><i class="material-icons md-light">arrow_forward</i></button>
-      <button v-on:click="note"><i class="material-icons md-light">note_add</i></button>
+      <button @click="back"><i class="material-icons md-light">arrow_back</i></button>
+      <button @click="forward"><i class="material-icons md-light">arrow_forward</i></button>
       <input v-model="url" placeholder="" />
-      <button v-on:click="minimize"><i class="material-icons md-light">minimize</i></button>
-      <button v-on:click="close"><i class="material-icons md-light">close</i></button>
+      <button @click="minimize"><i class="material-icons md-light">minimize</i></button>
+      <button @click="close"><i class="material-icons md-light">close</i></button>
   </nav>
-  <div id="browser-view">
+  <div class="main">
+    <div :class="[collapsed ? sidebarOpen : sidebarCollapsed, sidebar]">
+        <nav>
+          <button @click="note"><i class="material-icons md-light">note_add</i></button>
+          <button ><i class="material-icons md-light">settings</i></button>
+          <button ><i class="material-icons md-light">style</i></button>
+          <button ><i class="material-icons md-light">gamepad</i></button>
+          <button @click="collapsed = !collapsed"><i class="material-icons md-light">add</i></button>
+        </nav>
+        <div>blah blah</div>
+    </div>
+    <div id="browser-view"></div>
   </div>
-  <!-- <div class="side-nav">
-  </div> -->
 </template>
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
@@ -18,7 +26,13 @@
 export default {
   name: 'App',
   data () {
-    return { url: '' }
+    return {
+      url: '',
+      collapsed: false,
+      sidebarOpen: 'sidebar-open',
+      sidebarCollapsed: 'sidebar-collapsed',
+      sidebar: 'sidebar'
+    }
   },
   mounted () {
     window.addEventListener('resize', this.onResize)
@@ -26,6 +40,13 @@ export default {
   beforeUnmount () {
     // Unregister the event listener before destroying this Vue instance
     window.removeEventListener('resize', this.onResize)
+  },
+  watch: {
+    collapsed (val) {
+      this.$nextTick(() => {
+        this.onResize()
+      })
+    }
   },
   methods: {
     onResize () {
@@ -35,7 +56,7 @@ export default {
         width: document.getElementById('browser-view').getBoundingClientRect().width,
         height: document.getElementById('browser-view').getBoundingClientRect().height
       }
-      // console.log(dimensions)
+      console.log(dimensions)
       window.ipcRenderer.send('resize-view', dimensions)
     },
     back () {
@@ -45,7 +66,7 @@ export default {
       window.ipcRenderer.send('go-forward')
     },
     note () {
-      console.log('note')
+      console.log(this.collapsed)
     },
     minimize () {
       console.log('minimize')
@@ -61,46 +82,53 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
+.main {
   height:100%;
+  grid-area: browser;
   display:flex;
+  align-items: stretch;
 }
-// #app {
-//   height: 100%;
-//   font-family: Avenir, Helvetica, Arial, sans-serif;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-//   display: grid;
-//     grid-template-columns: 1fr;
-//     grid-template-rows: 0.2fr 1.8fr;
-//     grid-template-areas:
-//     "item-nav"
-//     "item-content";
-// }
+#app {
+  width:100%;
+  height:100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 40px 1fr;
+  grid-template-areas:
+  "toolbar"
+  "browser";
+}
 html, body {
   margin: 0;
   height: 100%;
 }
-// #search {
-//   grid-area: item-content;
-//   display: flex;
-// }
-#browser-view {
-  height: 100%;
-}
 .toolbar {
   -webkit-app-region: drag;
-  grid-area: item-nav;
+  grid-area: toolbar;
   display: flex;
   justify-content: space-around;
   align-items: center;
   background-color: rgb(6, 48, 58);
 }
 .toolbar button{
-  -webkit-app-region: no-dragS
+  -webkit-app-region: no-drag
 }
 .toolbar input{
   -webkit-app-region: no-drag
 }
-
+#browser-view{
+  width:100%;
+}
+.sidebar-collapsed {
+  width:50px;
+}
+.sidebar-open {
+  width:200px;
+}
+.sidebar{
+  min-width: 50px;
+  display:flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+}
 </style>
