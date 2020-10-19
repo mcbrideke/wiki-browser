@@ -21,7 +21,7 @@ async function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
     width: 600,
-    height: 800,
+    height: 400,
     backgroundColor: '#00000000',
     frame: false,
     alwaysOnTop: false,
@@ -37,13 +37,14 @@ async function createWindow () {
     }
   })
   win.setBrowserView(view)
-  view.setBounds({ x: 0, y: 80, width: 600, height: 720 })
+  view.setBounds({ x: 0, y: 40, width: 600, height: 360 })
   view.setAutoResize({width:true, height:true, horizontal: true, vetical:true})
   view.webContents.loadURL('https://electronjs.org')
+  view.webContents.setZoomFactor(0.8)
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
+    if (!process.env.IS_TEST) console.log('')//win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
@@ -109,6 +110,7 @@ ipcMain.on('close-app',()=>{
 ipcMain.on('resize-view',(event, arg)=>{
   let newBounds = { x: Math.floor(arg.x), y: Math.floor(arg.y), width: Math.floor(arg.width), height: Math.floor(arg.height) }
   view.setBounds(newBounds)
+  view.webContents.setZoomFactor(0.8)
 })
 
 ipcMain.on('go-back', ()=> {

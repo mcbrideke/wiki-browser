@@ -1,19 +1,25 @@
 <template>
-  <nav class="navbar">
-    <button v-on:click="back"><i class="material-icons md-light">arrow_back</i></button>
-    <button v-on:click="forward"><i class="material-icons md-light">arrow_forward</i></button>
-    <button v-on:click="note"><i class="material-icons md-light">note_add</i></button>
-    <button v-on:click="minimize"><i class="material-icons md-light">minimize</i></button>
-    <button v-on:click="close"><i class="material-icons md-light">close</i></button>
+  <nav class="toolbar">
+      <button v-on:click="back"><i class="material-icons md-light">arrow_back</i></button>
+      <button v-on:click="forward"><i class="material-icons md-light">arrow_forward</i></button>
+      <button v-on:click="note"><i class="material-icons md-light">note_add</i></button>
+      <input v-model="url" placeholder="" />
+      <button v-on:click="minimize"><i class="material-icons md-light">minimize</i></button>
+      <button v-on:click="close"><i class="material-icons md-light">close</i></button>
   </nav>
-  <div id="search" ref="search">
+  <div id="browser-view">
   </div>
+  <!-- <div class="side-nav">
+  </div> -->
 </template>
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
+  data () {
+    return { url: '' }
+  },
   mounted () {
     window.addEventListener('resize', this.onResize)
   },
@@ -24,10 +30,10 @@ export default {
   methods: {
     onResize () {
       const dimensions = {
-        x: document.getElementById('search').getBoundingClientRect().x,
-        y: document.getElementById('search').getBoundingClientRect().y,
-        width: document.getElementById('search').getBoundingClientRect().width,
-        height: document.getElementById('search').getBoundingClientRect().height
+        x: document.getElementById('browser-view').getBoundingClientRect().x,
+        y: document.getElementById('browser-view').getBoundingClientRect().y,
+        width: document.getElementById('browser-view').getBoundingClientRect().width,
+        height: document.getElementById('browser-view').getBoundingClientRect().height
       }
       // console.log(dimensions)
       window.ipcRenderer.send('resize-view', dimensions)
@@ -56,37 +62,45 @@ export default {
 
 <style lang="scss">
 #app {
-  height: 100%;
-  background-color: transparent;
-  opacity: 0.3;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.2fr 1.8fr;
-    grid-template-areas:
-    "item-nav"
-    "item-content";
+  height:100%;
+  display:flex;
 }
+// #app {
+//   height: 100%;
+//   font-family: Avenir, Helvetica, Arial, sans-serif;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+//   display: grid;
+//     grid-template-columns: 1fr;
+//     grid-template-rows: 0.2fr 1.8fr;
+//     grid-template-areas:
+//     "item-nav"
+//     "item-content";
+// }
 html, body {
-  margin:0;
+  margin: 0;
   height: 100%;
-  box-sizing: border-box;
-  background-color: transparent;
 }
-#search {
-  grid-area: item-content;
-  display: flex;
+// #search {
+//   grid-area: item-content;
+//   display: flex;
+// }
+#browser-view {
+  height: 100%;
 }
-.navbar {
+.toolbar {
   -webkit-app-region: drag;
   grid-area: item-nav;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  background-color: rgb(6, 48, 58);
 }
-.navbar button {
+.toolbar button{
+  -webkit-app-region: no-dragS
+}
+.toolbar input{
   -webkit-app-region: no-drag
 }
+
 </style>
