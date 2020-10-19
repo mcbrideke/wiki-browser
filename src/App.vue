@@ -8,20 +8,20 @@
   </nav>
   <div class="main">
     <div :class="[collapsed ? sidebarOpen : sidebarCollapsed, sidebar]">
-        <nav>
-          <button @click="note"><i class="material-icons md-light">note_add</i></button>
-          <button ><i class="material-icons md-light">settings</i></button>
-          <button ><i class="material-icons md-light">style</i></button>
-          <button ><i class="material-icons md-light">gamepad</i></button>
-          <button @click="collapsed = !collapsed"><i class="material-icons md-light">add</i></button>
-        </nav>
-        <div>blah blah</div>
+        <button class="notes" @click="notes"><i class="material-icons sm-light">note_add</i></button>
+        <button class="settings" @click="settings"><i class="material-icons sm-light">settings</i></button>
+        <button class="style-op" @click="styles"><i class="material-icons sm-light">style</i></button>
+        <button class="click-through" @click="clickThrough"><i class="material-icons sm-light">gamepad</i></button>
+        <button class="exit-side" v-show="collapsed" @click="collapsed = false"><i class="material-icons sm-light">fullscreen_exit</i></button>
+        <div class="component-info" v-show="collapsed"><component v-bind:key="tab" v-bind:is="currentTabComponent"></component></div>
     </div>
     <div id="browser-view"></div>
   </div>
 </template>
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import Notes from './components/Notes.vue'
+import Settings from './components/Settings.vue'
+import Styles from './components/Styles.vue'
 
 export default {
   name: 'App',
@@ -31,7 +31,13 @@ export default {
       collapsed: false,
       sidebarOpen: 'sidebar-open',
       sidebarCollapsed: 'sidebar-collapsed',
-      sidebar: 'sidebar'
+      sidebar: 'sidebar',
+      currentTab: 'Notes'
+    }
+  },
+  computed: {
+    currentTabComponent: function () {
+      return this.currentTab
     }
   },
   mounted () {
@@ -65,19 +71,30 @@ export default {
     forward () {
       window.ipcRenderer.send('go-forward')
     },
-    note () {
-      console.log(this.collapsed)
+    notes () {
+      this.collapsed = true
     },
     minimize () {
       console.log('minimize')
     },
     close () {
       window.ipcRenderer.send('close-app')
+    },
+    clickThrough () {
+      console.log('click-through')
+    },
+    settings () {
+      this.collapsed = true
+    },
+    styles () {
+      this.collapsed = true
     }
+  },
+  components: {
+    Notes,
+    Settings,
+    Styles
   }
-  // components: {
-  //   HelloWorld
-  // }
 }
 </script>
 
@@ -120,15 +137,30 @@ html, body {
   width:100%;
 }
 .sidebar-collapsed {
-  width:50px;
+  width:50px !important;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    "notes"
+    "settings"
+    "style-op"
+    "click-through";
 }
 .sidebar-open {
-  width:200px;
+  width:200px !important;
+  grid-template-rows: 0.2fr 1.8fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    "notes settings style-op click-through exit-side"
+    "component-info component-info component-info component-info component-info";
 }
 .sidebar{
-  min-width: 50px;
-  display:flex;
-  flex-direction: column;
+  display: grid;
   background-color: whitesmoke;
 }
+.notes { grid-area: notes; }
+.settings { grid-area: settings; }
+.style { grid-area: style-op; }
+.click-through { grid-area: click-through; }
+.component-info{grid-area: component-info; }
 </style>
