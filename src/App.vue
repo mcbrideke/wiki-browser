@@ -2,7 +2,7 @@
   <nav class="toolbar">
       <button @click="back"><i class="material-icons md-light">arrow_back</i></button>
       <button @click="forward"><i class="material-icons md-light">arrow_forward</i></button>
-      <input v-model="url" placeholder="" />
+      <input v-on:keyup.enter="submit" v-model="url" placeholder="" />
       <button @click="minimize"><i class="material-icons md-light">minimize</i></button>
       <button @click="close"><i class="material-icons md-light">close</i></button>
   </nav>
@@ -11,9 +11,9 @@
         <button class="notes" @click="notes"><i class="material-icons sm-light">note_add</i></button>
         <button class="settings" @click="settings"><i class="material-icons sm-light">settings</i></button>
         <button class="style-op" @click="styles"><i class="material-icons sm-light">style</i></button>
-        <button class="click-through" @click="clickThrough"><i class="material-icons sm-light">gamepad</i></button>
+        <button id="clickThrough" class="click-through" @click="clickThrough" @mouseover="disableClickThrough"><i class="material-icons sm-light">gamepad</i></button>
         <button class="exit-side" v-show="collapsed" @click="collapsed = false"><i class="material-icons sm-light">fullscreen_exit</i></button>
-        <div class="component-info" v-show="collapsed"><component v-bind:key="tab" v-bind:is="currentTabComponent"></component></div>
+        <div  class="component-info" v-show="collapsed"><component v-bind:key="tab" v-bind:is="currentTabComponent"></component></div>
     </div>
     <div id="browser-view"></div>
   </div>
@@ -29,6 +29,7 @@ export default {
     return {
       url: '',
       collapsed: false,
+      canClickThrough: false,
       sidebarOpen: 'sidebar-open',
       sidebarCollapsed: 'sidebar-collapsed',
       sidebar: 'sidebar',
@@ -42,6 +43,10 @@ export default {
   },
   mounted () {
     window.addEventListener('resize', this.onResize)
+    // const el = document.getElementById('clickThrough')
+    // el.addEventListener('mouseenter', () => {
+    //   console.log(this.canClickThrough)
+    // })
   },
   beforeUnmount () {
     // Unregister the event listener before destroying this Vue instance
@@ -62,7 +67,7 @@ export default {
         width: document.getElementById('browser-view').getBoundingClientRect().width,
         height: document.getElementById('browser-view').getBoundingClientRect().height
       }
-      console.log(dimensions)
+      // console.log(dimensions)
       window.ipcRenderer.send('resize-view', dimensions)
     },
     back () {
@@ -73,6 +78,7 @@ export default {
     },
     notes () {
       this.collapsed = true
+      this.currentTab = 'Notes'
     },
     minimize () {
       console.log('minimize')
@@ -81,13 +87,26 @@ export default {
       window.ipcRenderer.send('close-app')
     },
     clickThrough () {
-      console.log('click-through')
+      window.ipcRenderer.send('click-through')
+      this.canClickThrough = true
+    },
+    disableClickThrough () {
+      console.log(this.canClickThrough)
+      if (this.canClickThrough) {
+        window.ipcRenderer.send('disable-click-through')
+      }
     },
     settings () {
       this.collapsed = true
+      this.currentTab = 'Settings'
     },
     styles () {
       this.collapsed = true
+      this.currentTab = 'Styles'
+    },
+    submit () {
+      console.log(this.url)
+      window.ipcRenderer.send('load-wiki', this.url)
     }
   },
   components: {
@@ -135,6 +154,8 @@ html, body {
 }
 #browser-view{
   width:100%;
+  background-color: black;
+  opacity: 0.5;
 }
 .sidebar-collapsed {
   width:50px !important;

@@ -39,7 +39,7 @@ async function createWindow () {
   win.setBrowserView(view)
   view.setBounds({ x: 50, y: 40, width: 550, height: 360 })
   view.setAutoResize({width:true, height:true, horizontal: true, vetical:true})
-  view.webContents.loadURL('https://electronjs.org')
+  view.webContents.loadURL('https://v3.vuejs.org/guide/introduction.html')
   view.webContents.setZoomFactor(0.8)
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -68,6 +68,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
+  console.log("called")
   if (win === null) {
     createWindow()
   }
@@ -119,4 +120,17 @@ ipcMain.on('go-back', ()=> {
 
 ipcMain.on('go-forward', ()=> {
   view.webContents.goForward()
+})
+
+ipcMain.on('click-through', () => {
+ //console.log(document.getElementById('clickThrough'))
+ //win.setIgnoreMouseEvents(true, { forward: true })
+ //console.log(win.setIgnoreMouseEvents)
+})
+ipcMain.on('disable-click-through', () => {
+  win.setIgnoreMouseEvents(false)
+})
+
+ipcMain.on('load-wiki', (event, arg) => {
+  view.webContents.loadURL(arg)
 })

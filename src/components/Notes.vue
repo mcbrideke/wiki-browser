@@ -1,6 +1,6 @@
 <template>
     <div>
-        hellow HelloWorl
+        Hello from notes
     </div>
 </template>
 <script>
