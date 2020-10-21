@@ -17,7 +17,7 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 async function createWindow () {
-  view = new BrowserView()
+  // view = new BrowserView()
   // Create the browser window.
   win = new BrowserWindow({
     width: 600,
@@ -36,12 +36,12 @@ async function createWindow () {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-  win.setBrowserView(view)
-  view.setBounds({ x: 48, y: 48, width: 552, height: 352 })
-  view.setAutoResize({width:true, height:true, horizontal: true, vetical:true})
-  view.setBackgroundColor('#00000000')
-  view.webContents.loadURL('https://v3.vuejs.org/guide/introduction.html')
-  view.webContents.setZoomFactor(0.8)
+  // win.setBrowserView(view)
+  // view.setBounds({ x: 48, y: 48, width: 552, height: 352 })
+  // view.setAutoResize({width:true, height:true, horizontal: true, vetical:true})
+  // view.setBackgroundColor('#00000000')
+  // view.webContents.loadURL('https://v3.vuejs.org/guide/introduction.html')
+  // view.webContents.setZoomFactor(0.8)
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -109,29 +109,29 @@ ipcMain.on('close-app',()=>{
   win.close()
 })
 
-ipcMain.on('resize-view',(event, arg)=>{
-  let newBounds = { x: Math.floor(arg.x), y: Math.floor(arg.y), width: Math.floor(arg.width), height: Math.floor(arg.height) }
-  view.setBounds(newBounds)
-  //view.webContents.setZoomFactor(0.8)
-})
+// ipcMain.on('resize-view',(event, arg)=>{
+//   let newBounds = { x: Math.floor(arg.x), y: Math.floor(arg.y), width: Math.floor(arg.width), height: Math.floor(arg.height) }
+//   view.setBounds(newBounds)
+//   //view.webContents.setZoomFactor(0.8)
+// })
 
-ipcMain.on('go-back', ()=> {
-  view.webContents.goBack()
-})
+// ipcMain.on('go-back', ()=> {
+//   view.webContents.goBack()
+// })
 
-ipcMain.on('go-forward', ()=> {
-  view.webContents.goForward()
-})
+// ipcMain.on('go-forward', ()=> {
+//   view.webContents.goForward()
+// })
 
-ipcMain.on('click-through', () => {
- //console.log(document.getElementById('clickThrough'))
- //win.setIgnoreMouseEvents(true, { forward: true })
- //console.log(win.setIgnoreMouseEvents)
-})
-ipcMain.on('disable-click-through', () => {
-  win.setIgnoreMouseEvents(false)
-})
+// ipcMain.on('click-through', () => {
+//  //console.log(document.getElementById('clickThrough'))
+//  //win.setIgnoreMouseEvents(true, { forward: true })
+//  //console.log(win.setIgnoreMouseEvents)
+// })
+// ipcMain.on('disable-click-through', () => {
+//   win.setIgnoreMouseEvents(false)
+// })
 
-ipcMain.on('load-wiki', (event, arg) => {
-  view.webContents.loadURL(arg)
-})
+// ipcMain.on('load-wiki', (event, arg) => {
+//   view.webContents.loadURL(arg)
+// })

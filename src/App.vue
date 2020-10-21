@@ -1,13 +1,20 @@
 <template>
-<div class="flex h-full flex-col">
+<div class="toolbar flex h-12 w-12 bg-teal-500 items-center justify-center" v-show="minimized">
+  <button class="hover:bg-teal-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimized = false">
+    <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+    </svg>
+  </button>
+</div>
+<div class="flex h-full flex-col bg-white" v-show="!minimized">
   <div class="toolbar flex h-12">
     <div class="flex items-center justify-around w-1/5 bg-teal-500">
-      <button class="hover:bg-teal-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="back">
+      <button class=" rounded-full text-white focus:outline-none px-1 py-1" :class="[ goBack ? 'hover:bg-teal-600  ' : 'opacity-50 cursor-default']" @click="back" >
         <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
       </button>
-      <button class="hover:bg-teal-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="forward">
+      <button class="focus:outline-none rounded-full text-white px-1 py-1" :class="[ goForward ? 'hover:bg-teal-600  ' : 'opacity-50 cursor-default']" @click="forward">
         <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
@@ -21,7 +28,7 @@
       <input class="h-8 focus:outline-none rounded-r" v-on:keyup.enter="submit" v-model="url" placeholder="Enter wiki url" />
     </div>
     <div class="flex items-center justify-around w-1/5 bg-teal-500">
-      <button class="hover:bg-teal-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimize">
+      <button class="hover:bg-teal-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimized = true">
         <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
         </svg>
@@ -61,7 +68,7 @@
               </button>
             </div>
             <div class="">
-              <button class="hover:bg-gray-300 px-1 py-1 focus:outline-none rounded-full text-gray-500" @click="clickThrough" @mouseover="disableClickThrough">
+              <button class="hover:bg-gray-300 px-1 py-1 focus:outline-none rounded-full text-gray-500" @click="clickThrough">
                 <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
                 </svg>
@@ -80,7 +87,9 @@
           </div>
         </div>
       </div>
-      <div id="browser-view" class="bg-gray-500 flex flex-grow"></div>
+      <div id="browser-view" class="bg-gray-500 flex flex-grow ">
+        <webview ref="web" class="inline-flex bg-gray-500 w-full h-full overflow-y-hidden" src="https://www.github.com/"></webview>
+      </div>
     </div>
   </div>
 </div>
@@ -97,65 +106,41 @@ export default {
       url: '',
       collapsed: true,
       canClickThrough: false,
-      sidebarOpen: 'sidebar-open',
-      sidebarCollapsed: 'sidebar-collapsed',
-      sidebar: 'sidebar',
-      currentTab: 'Notes'
+      currentTab: 'Notes',
+      minimized: false,
+      goBack: true,
+      goForward: true
     }
+  },
+  mounted () {
+    this.$refs.web.addEventListener('did-stop-loading', this.loadstop)
   },
   computed: {
     currentTabComponent: function () {
       return this.currentTab
     }
   },
-  mounted () {
-    window.addEventListener('resize', this.onResize)
-  },
-  beforeUnmount () {
-    window.removeEventListener('resize', this.onResize)
-  },
-  watch: {
-    collapsed (val) {
-      this.$nextTick(() => {
-        this.onResize()
-      })
-    }
-  },
   methods: {
-    onResize () {
-      const dimensions = {
-        x: document.getElementById('browser-view').getBoundingClientRect().x,
-        y: document.getElementById('browser-view').getBoundingClientRect().y,
-        width: document.getElementById('browser-view').getBoundingClientRect().width,
-        height: document.getElementById('browser-view').getBoundingClientRect().height
-      }
-      window.ipcRenderer.send('resize-view', dimensions)
+    loadstop () {
+      this.goBack = this.$refs.web.canGoBack()
+      this.goForward = this.$refs.web.canGoForward()
     },
     back () {
-      window.ipcRenderer.send('go-back')
+      this.$refs.web.goBack()
     },
     forward () {
-      window.ipcRenderer.send('go-forward')
+      this.$refs.web.goForward()
     },
     notes () {
       this.collapsed = false
       this.currentTab = 'Notes'
     },
-    minimize () {
-      console.log('minimize')
-    },
     close () {
       window.ipcRenderer.send('close-app')
     },
     clickThrough () {
-      window.ipcRenderer.send('click-through')
-      this.canClickThrough = false
-    },
-    disableClickThrough () {
-      // console.log(this.canClickThrough)
-      if (this.canClickThrough) {
-        window.ipcRenderer.send('disable-click-through')
-      }
+      this.$refs.web.setZoomFactor(0.5)
+      // this.$refs.web.setVerticalScrollBarEnabled(false)
     },
     settings () {
       this.collapsed = false
@@ -166,8 +151,13 @@ export default {
       this.currentTab = 'Styles'
     },
     submit () {
-      // console.log(this.url)
-      window.ipcRenderer.send('load-wiki', this.url)
+      const pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!-]))?/
+      if (pattern.test(this.url)) {
+        this.$refs.web.loadURL(this.url)
+      } else {
+        const search = 'https://www.google.com/search?q=' + this.url
+        this.$refs.web.loadURL(search)
+      }
       this.url = ''
     }
   },
