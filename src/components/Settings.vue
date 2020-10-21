@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="text-center text-orange-400 m-2 font-bold">
         Hello from Settings
     </div>
 </template>

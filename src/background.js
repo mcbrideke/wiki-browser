@@ -39,6 +39,7 @@ async function createWindow () {
   win.setBrowserView(view)
   view.setBounds({ x: 48, y: 48, width: 552, height: 352 })
   view.setAutoResize({width:true, height:true, horizontal: true, vetical:true})
+  view.setBackgroundColor('#00000000')
   view.webContents.loadURL('https://v3.vuejs.org/guide/introduction.html')
   view.webContents.setZoomFactor(0.8)
   if (process.env.WEBPACK_DEV_SERVER_URL) {
