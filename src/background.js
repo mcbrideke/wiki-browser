@@ -37,7 +37,7 @@ async function createWindow () {
     }
   })
   win.setBrowserView(view)
-  view.setBounds({ x: 50, y: 40, width: 550, height: 360 })
+  view.setBounds({ x: 48, y: 48, width: 552, height: 352 })
   view.setAutoResize({width:true, height:true, horizontal: true, vetical:true})
   view.webContents.loadURL('https://v3.vuejs.org/guide/introduction.html')
   view.webContents.setZoomFactor(0.8)
