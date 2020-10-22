@@ -1,25 +1,25 @@
 <template>
-<div class="toolbar flex h-12 w-12 bg-teal-500 items-center justify-center" v-show="minimized">
-  <button class="hover:bg-teal-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimized = false">
+<div class="toolbar flex h-12 w-12 bg-gray-600 items-center justify-center" v-show="minimized">
+  <button class="hover:bg-gray-700 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimized = false">
     <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
     </svg>
   </button>
 </div>
 <div class="flex flex-col bg-white h-full" v-show="!minimized">
-  <div class="toolbar flex h-12">
-    <div class="flex items-center justify-around w-1/5 bg-teal-500">
-      <button class=" rounded-full text-white focus:outline-none px-1 py-1" :class="[ goBack ? 'hover:bg-teal-600  ' : 'opacity-50 cursor-default']" @click="back" >
+  <div class="toolbar flex h-12" v-show="!barHidden">
+    <div class="flex items-center justify-around w-1/5 bg-gray-500">
+      <button class=" rounded-full text-white focus:outline-none px-1 py-1" :class="[ goBack ? 'hover:bg-gray-600  ' : 'opacity-50 cursor-default']" @click="back" >
         <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
       </button>
-      <button class="focus:outline-none rounded-full text-white px-1 py-1" :class="[ goForward ? 'hover:bg-teal-600  ' : 'opacity-50 cursor-default']" @click="forward">
+      <button class="focus:outline-none rounded-full text-white px-1 py-1" :class="[ goForward ? 'hover:bg-gray-600  ' : 'opacity-50 cursor-default']" @click="forward">
         <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
       </button></div>
-    <div class="flex items-center justify-center w-3/5 bg-teal-500">
+    <div class="flex items-center justify-center w-3/5 bg-gray-500">
       <button class="bg-white h-8 px-2 rounded-l focus:outline-none text-gray-500" @click="submit">
        <svg class="pointer-events-none w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -27,13 +27,13 @@
       </button>
       <input class="h-8 focus:outline-none rounded-r" v-on:keyup.enter="submit" v-model="url" placeholder="Enter wiki url" />
     </div>
-    <div class="flex items-center justify-around w-1/5 bg-teal-500">
-      <button class="hover:bg-teal-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimized = true">
+    <div class="flex items-center justify-around w-1/5 bg-gray-500">
+      <button class="hover:bg-gray-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimized = true">
         <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
         </svg>
       </button>
-      <button class="hover:bg-teal-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="close">
+      <button class="hover:bg-gray-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="close">
         <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -83,7 +83,7 @@
             </div>
           </div>
           <div class="bg-gray-100 flex flex-grow">
-            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent"></component></keep-alive></div>
+            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent" @hide-toolbar="hidetoolbar"></component></keep-alive></div>
           </div>
         </div>
       </div>
@@ -109,7 +109,8 @@ export default {
       currentTab: 'Notes',
       minimized: false,
       goBack: true,
-      goForward: true
+      goForward: true,
+      barHidden: false
     }
   },
   mounted () {
@@ -121,6 +122,9 @@ export default {
     }
   },
   methods: {
+    hidetoolbar () {
+      this.barHidden = !this.barHidden
+    },
     loadstop () {
       this.goBack = this.$refs.web.canGoBack()
       this.goForward = this.$refs.web.canGoForward()
@@ -139,7 +143,7 @@ export default {
       window.ipcRenderer.send('close-app')
     },
     clickThrough () {
-      this.$refs.web.setZoomFactor(0.5)
+      this.$refs.web.setZoomFactor(1)
       // this.$refs.web.setVerticalScrollBarEnabled(false)
     },
     settings () {
