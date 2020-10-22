@@ -98,6 +98,12 @@ if (isDevelopment) {
   }
 }
 
-ipcMain.on('close-app',()=>{
+ipcMain.on('close-app',() => {
   win.close()
+})
+
+ipcMain.on('lock-position', (e, arg) => {
+  let positionX = arg.x
+  let positionY = arg.y
+  win.setPosition(positionX, positionY)
 })
