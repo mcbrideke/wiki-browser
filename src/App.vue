@@ -6,7 +6,7 @@
     </svg>
   </button>
 </div>
-<div class="flex h-full flex-col bg-white" v-show="!minimized">
+<div class="flex flex-col bg-white h-full" v-show="!minimized">
   <div class="toolbar flex h-12">
     <div class="flex items-center justify-around w-1/5 bg-teal-500">
       <button class=" rounded-full text-white focus:outline-none px-1 py-1" :class="[ goBack ? 'hover:bg-teal-600  ' : 'opacity-50 cursor-default']" @click="back" >
@@ -20,7 +20,7 @@
         </svg>
       </button></div>
     <div class="flex items-center justify-center w-3/5 bg-teal-500">
-      <button class="bg-white h-8 px-2 rounded-l focus:outline-none text-gray-500">
+      <button class="bg-white h-8 px-2 rounded-l focus:outline-none text-gray-500" @click="submit">
        <svg class="pointer-events-none w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
@@ -83,7 +83,7 @@
             </div>
           </div>
           <div class="bg-gray-100 flex flex-grow">
-            <div v-show="!collapsed"><component v-bind:is="currentTabComponent"></component></div>
+            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent"></component></keep-alive></div>
           </div>
         </div>
       </div>

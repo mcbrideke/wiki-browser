@@ -1,7 +1,5 @@
 <template>
-    <div class="text-center text-orange-400 m-2 font-bold">
-        Hello from Styles
-    </div>
+  <textarea class="flex flex-grow bg-gray-100 focus:outline-none mx-4 resize-none" ></textarea>
 </template>
 <script>
 export default {
