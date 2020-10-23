@@ -22,7 +22,7 @@
               />
             </span>
           </span>
-          <span class="ml-3 text-sm">Hide toolbar</span>
+          <span class="ml-3 text-gray-800 select-none">Hide toolbar</span>
         </label>
       </div>
       <div class="mx-2">
@@ -43,7 +43,7 @@
               />
             </span>
           </span>
-          <span class="ml-3 text-sm">Lock position</span>
+          <span class="ml-3 text-gray-800 select-none">Lock position</span>
         </label>
       </div>
       <div class="grid grid-cols-3 gap-2 mx-2 w-1/2" id="v-model-radiobutton" v-show="lockPosition">
@@ -209,15 +209,22 @@
             </span>
           </span>
         </div>
-        <!-- <div class="m-1 w-4 h-4 bg-gray-600"><div class="w-2 h-2 m-1 hover:bg-white"></div></div>
-        <div class="m-1 w-4 h-4 bg-gray-600"></div>
-        <div class="m-1 w-4 h-4 bg-gray-600"></div>
-        <div class="m-1 w-4 h-4 bg-gray-600"></div>
-        <div class="m-1 w-4 h-4 bg-gray-600"></div>
-        <div class="m-1 w-4 h-4 bg-gray-600"></div>
-        <div class="m-1 w-4 h-4 bg-gray-600"></div>
-        <div class="m-1 w-4 h-4 bg-gray-600"></div>
-        <div class="m-1 w-4 h-4 bg-gray-600"></div> -->
+      </div>
+      <div class="inline-flex mx-2 mt-3">
+        <button class="bg-gray-500 rounded-l w-6 h-6 shadow inset-y-0 text-white focus:outline-none" :class="[ minZoom ? 'pointer-events-none opacity-75' : '']" @click="zoomDec">
+          <svg class="pointer-events-none w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+          </svg>
+        </button>
+        <div class="bg-white w-10 h-6 px-1 text-sm text-gray-800 text-center shadow-inner cursor-default select-none">
+          {{ zoomFactor }}%
+        </div>
+        <button class="bg-gray-500 rounded-r w-6 h-6 text-white shadow inset-y-0 focus:outline-none" :class="[ maxZoom ? 'pointer-events-none opacity-75' : '']" @click="zoomInc">
+          <svg class="pointer-events-none w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </button>
+        <span class="ml-3 text-gray-800 select-none">Zoom</span>
       </div>
     </div>
   </div>
@@ -225,13 +232,17 @@
 <script>
 export default {
   name: 'Settings',
-  emits: ['hide-toolbar', 'lock-position'],
+  emits: ['hide-toolbar', 'lock-position', 'zoom-factor'],
   data () {
     return {
       checked: false,
       lockPosition: false,
       positions: ['tl', 'tm', 'tr', 'l', 'm', 'r', 'bl', 'bm', 'br'],
-      currentPosition: ''
+      currentPosition: '',
+      zoomFactor: 100,
+      color: 'green',
+      minZoom: false,
+      maxZoom: false
     }
   },
   watch: {
@@ -252,7 +263,34 @@ export default {
       } else {
         this.currentPosition = 'tl'
       }
-      // this.$emit('lock-position', this.$event, this.currentPosition)
+    },
+    zoomInc () {
+      this.minZoom = false
+      if (this.zoomFactor === 290) {
+        this.zoomFactor += 10
+        this.maxZoom = true
+        this.$emit('zoom-factor', this.$event, this.zoomFactor)
+      } else if (this.zoomFactor > 290) {
+        this.maxZoom = true
+      } else {
+        this.zoomFactor += 10
+        this.maxZoom = false
+        this.$emit('zoom-factor', this.$event, this.zoomFactor)
+      }
+    },
+    zoomDec () {
+      this.maxZoom = false
+      if (this.zoomFactor === 60) {
+        this.zoomFactor -= 10
+        this.minZoom = true
+        this.$emit('zoom-factor', this.$event, this.zoomFactor)
+      } else if (this.zoomFactor < 60) {
+        this.minZoom = true
+      } else {
+        this.zoomFactor -= 10
+        this.minZoom = false
+        this.$emit('zoom-factor', this.$event, this.zoomFactor)
+      }
     }
   }
 }

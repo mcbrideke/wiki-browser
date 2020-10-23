@@ -77,13 +77,13 @@
             <div class="">
               <button class="hover:bg-gray-300 px-1 py-1 focus:outline-none rounded-full text-gray-500" v-show="!collapsed" @click="collapsed = true">
                 <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
             </div>
           </div>
           <div class="bg-gray-100 flex flex-grow">
-            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent" @hide-toolbar="hidetoolbar" @lock-position="lockposition"></component></keep-alive></div>
+            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent" @hide-toolbar="hidetoolbar" @lock-position="lockposition" @zoom-factor="zoom"></component></keep-alive></div>
           </div>
         </div>
       </div>
@@ -149,6 +149,9 @@ export default {
         window.ipcRenderer.send('lock-position', positions[position])
       }
     },
+    zoom (e, zoomFactor) {
+      this.$refs.web.setZoomFactor(zoomFactor / 100)
+    },
     hidetoolbar () {
       this.barHidden = !this.barHidden
     },
@@ -170,7 +173,7 @@ export default {
       window.ipcRenderer.send('close-app')
     },
     clickThrough () {
-      this.$refs.web.setZoomFactor(1)
+      console.log('cthrough')
       // this.$refs.web.setVerticalScrollBarEnabled(false)
     },
     settings () {

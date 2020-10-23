@@ -103,7 +103,7 @@ ipcMain.on('close-app',() => {
 })
 
 ipcMain.on('lock-position', (e, arg) => {
-  let positionX = arg.x
-  let positionY = arg.y
+  let positionX = Math.floor(arg.x)
+  let positionY = Math.floor(arg.y)
   win.setPosition(positionX, positionY)
 })
