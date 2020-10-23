@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-center text-gray-700 h-8 font-bold tracking-wide">
+  <h1 class="text-center text-gray-700 h-8 font-bold tracking-wide select-none">
     Settings
   </h1>
   <div class="flex flex-grow">
@@ -47,164 +47,20 @@
         </label>
       </div>
       <div class="grid grid-cols-3 gap-2 mx-2 w-1/2" id="v-model-radiobutton" v-show="lockPosition">
-        <div class="">
+        <div class="" v-for="n in 9" :key="n">
           <span class="relative">
             <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
             <span
               class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
               :class="[
-                currentPosition === positions[0] ? 'bg-white' : 'bg-gray-400',
+                currentPosition === positions[n-1] ? 'bg-white' : 'bg-gray-400',
               ]"
             >
               <input
                 type="radio"
                 class="absolute opacity-0 w-4 h-4 cursor-pointer"
                 v-model="currentPosition"
-                v-bind:value="positions[0]"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="">
-          <span class="relative">
-            <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
-            <span
-              class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
-              :class="[
-                currentPosition === positions[1] ? 'bg-white' : 'bg-gray-400',
-              ]"
-            >
-              <input
-                type="radio"
-                class="absolute opacity-0 w-4 h-4 cursor-pointer"
-                v-model="currentPosition"
-                v-bind:value="positions[1]"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="">
-          <span class="relative">
-            <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
-            <span
-              class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
-              :class="[
-                currentPosition === positions[2] ? 'bg-white' : 'bg-gray-400',
-              ]"
-            >
-              <input
-                type="radio"
-                class="absolute opacity-0 w-4 h-4 cursor-pointer"
-                v-model="currentPosition"
-                v-bind:value="positions[2]"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="">
-          <span class="relative">
-            <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
-            <span
-              class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
-              :class="[
-                currentPosition === positions[3] ? 'bg-white' : 'bg-gray-400',
-              ]"
-            >
-              <input
-                type="radio"
-                class="absolute opacity-0 w-4 h-4 cursor-pointer"
-                v-model="currentPosition"
-                v-bind:value="positions[3]"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="">
-          <span class="relative">
-            <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
-            <span
-              class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
-              :class="[
-                currentPosition === positions[4] ? 'bg-white' : 'bg-gray-400',
-              ]"
-            >
-              <input
-                type="radio"
-                class="absolute opacity-0 w-4 h-4 cursor-pointer"
-                v-model="currentPosition"
-                v-bind:value="positions[4]"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="">
-          <span class="relative">
-            <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
-            <span
-              class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
-              :class="[
-                currentPosition === positions[5] ? 'bg-white' : 'bg-gray-400',
-              ]"
-            >
-              <input
-                type="radio"
-                class="absolute opacity-0 w-4 h-4 cursor-pointer"
-                v-model="currentPosition"
-                v-bind:value="positions[5]"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="">
-          <span class="relative">
-            <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
-            <span
-              class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
-              :class="[
-                currentPosition === positions[6] ? 'bg-white' : 'bg-gray-400',
-              ]"
-            >
-              <input
-                type="radio"
-                class="absolute opacity-0 w-4 h-4 cursor-pointer"
-                v-model="currentPosition"
-                v-bind:value="positions[6]"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="">
-          <span class="relative">
-            <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
-            <span
-              class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
-              :class="[
-                currentPosition === positions[7] ? 'bg-white' : 'bg-gray-400',
-              ]"
-            >
-              <input
-                type="radio"
-                class="absolute opacity-0 w-4 h-4 cursor-pointer"
-                v-model="currentPosition"
-                v-bind:value="positions[7]"
-              />
-            </span>
-          </span>
-        </div>
-        <div class="">
-          <span class="relative">
-            <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
-            <span
-              class="absolute block w-3 h-3 mt-1 ml-1 shadow inset-y-0 focus-within:shadow-outline"
-              :class="[
-                currentPosition === positions[8] ? 'bg-white' : 'bg-gray-400',
-              ]"
-            >
-              <input
-                type="radio"
-                class="absolute opacity-0 w-4 h-4 cursor-pointer"
-                v-model="currentPosition"
-                v-bind:value="positions[8]"
+                v-bind:value="positions[n-1]"
               />
             </span>
           </span>
