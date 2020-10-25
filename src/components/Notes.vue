@@ -14,9 +14,9 @@
     </div>
   </div>
   <div class="flex flex-grow">
-    <div class="flex flex-col w-full">
-      <div class="ml-4 text-gray-600" v-if="!notes.length" v-show="list">No notes</div>
-      <div class="flex flex-col w-full ml-4 mb-2" v-show="list" v-for="item in notes" :key="item.key" @click="updateNote(item)">
+    <div class="flex flex-col w-full" v-show="list">
+      <div class="mx-auto text-gray-600" v-if="!notes.length" >No notes</div>
+      <div class="flex flex-col w-full ml-4 mb-2" v-show="list" v-for="item in notes" :key="item.id" @click="updateNote(item)">
           <div class="flex h-auto justify-start ml-2 text-gray-600 font-bold" >
               {{ item.title }}
           </div>
@@ -28,14 +28,14 @@
           </div>
       </div>
     </div>
-    <div class="flex flex-col">
-      <input type="text" class="bg-gray-100 focus:outline-none h-6" placeholder="Title" v-model="title" v-show="!list"/>
-      <hr class="w-4/5 bg-gray-600"/>
-      <textarea class="bg-gray-100 focus:outline-none resize-none text-sm" v-model="note" v-show="!list" placeholder="Take a note..."></textarea>
+    <div class="flex flex-col w-5/6 h-full m-auto" v-show="!list">
+      <input type="text" class="bg-gray-100 focus:outline-none h-6" placeholder="Title" v-model="title"/>
+      <hr class="w-full bg-gray-600"/>
+      <textarea class="bg-gray-100 focus:outline-none resize-none text-sm h-full" v-model="note" placeholder="Take a note..."></textarea>
     </div>
   </div>
-  <div class="flex h-6 justify-end items-center">
-     <button class="w-6 h-6 rounded-full text-gray-700 mr-2 mb-2 focus:outline-none hover:bg-gray-400 " @click="list=false" v-show="list">
+  <div class="flex h-6 justify-end items-center pr-2 pb-2">
+     <button class="w-6 h-6 rounded-full text-gray-700 focus:outline-none hover:bg-gray-400 " @click="list=false" v-show="list">
         <svg class="pointer-events-none w-6 h-6 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
@@ -51,13 +51,14 @@ export default {
       note: '',
       title: '',
       notes: [],
-      nextNotesId: 0
+      nextNotesId: 0,
+      pageIndex: 1
     }
   },
   methods: {
     save () {
       this.list = true
-      if (this.note.length !== 0 && this.note.length !== 0) {
+      if (this.note.length !== 0 && this.title.length !== 0) {
         this.notes.push({ id: this.nextNotesId++, title: this.title, text: this.note })
         this.note = ''
         this.title = ''

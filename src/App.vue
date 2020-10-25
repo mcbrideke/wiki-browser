@@ -88,7 +88,7 @@
         </div>
       </div>
       <div id="browser-view" class="bg-gray-500 flex flex-grow ">
-        <webview ref="web" class="inline-flex bg-gray-500 w-full h-full overflow-y-hidden" src="https://www.github.com/"></webview>
+        <webview ref="web" class="inline-flex bg-gray-500 w-full h-full" src="https://www.github.com/"></webview>
       </div>
     </div>
   </div>
