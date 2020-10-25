@@ -16,7 +16,7 @@
   <div class="flex flex-grow">
     <div class="flex flex-col w-full" v-show="list">
       <div class="mx-auto text-gray-600" v-if="!notes.length" >No notes</div>
-      <div class="flex flex-col w-full ml-4 mb-2" v-show="list" v-for="item in notes" :key="item.id" @click="updateNote(item)">
+      <div class="flex flex-col w-full ml-4 mb-2 cursor-pointer" v-show="list" v-for="item in notes" :key="item.id" @click="updateNote(item)">
           <div class="flex h-auto justify-start ml-2 text-gray-600 font-bold" >
               {{ item.title }}
           </div>
@@ -29,9 +29,9 @@
       </div>
     </div>
     <div class="flex flex-col w-5/6 h-full m-auto" v-show="!list">
-      <input type="text" class="bg-gray-100 focus:outline-none h-6" placeholder="Title" v-model="title"/>
+      <input type="text" class="bg-gray-100 focus:outline-none h-6 text-gray-700 font-bold" placeholder="Title" v-model="title"/>
       <hr class="w-full bg-gray-600"/>
-      <textarea class="bg-gray-100 focus:outline-none resize-none text-sm h-full" v-model="note" placeholder="Take a note..."></textarea>
+      <textarea class="bg-gray-100 focus:outline-none resize-none text-gray-600 text-sm h-full" v-model="note" placeholder="Take a note..."></textarea>
     </div>
   </div>
   <div class="flex h-6 justify-end items-center pr-2 pb-2">
@@ -52,13 +52,27 @@ export default {
       title: '',
       notes: [],
       nextNotesId: 0,
-      pageIndex: 1
+      activeId: -1
     }
   },
   methods: {
     save () {
       this.list = true
-      if (this.note.length !== 0 && this.title.length !== 0) {
+      if (this.activeId !== -1) {
+        console.log('this ran')
+        const objIndex = this.notes.findIndex(obj => obj.id === this.activeId)
+        const updatedObj = { ...this.notes[objIndex], title: this.title, text: this.note }
+        const updatedNotes = [
+          ...this.notes.slice(0, objIndex),
+          updatedObj,
+          ...this.notes.slice(objIndex + 1)
+        ]
+        this.notes = updatedNotes
+        this.note = ''
+        this.title = ''
+        this.activeId = -1
+      } else if (this.note.length !== 0 && this.title.length !== 0) {
+        console.log('no this ran')
         this.notes.push({ id: this.nextNotesId++, title: this.title, text: this.note })
         this.note = ''
         this.title = ''
@@ -68,6 +82,7 @@ export default {
       this.list = false
       this.note = u.text
       this.title = u.title
+      this.activeId = u.id
     }
   }
 }
