@@ -9,6 +9,27 @@
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
+              :class="[onTop ? 'bg-green-600' : ' bg-gray-400']"
+            ></span>
+            <span
+              class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
+              :class="[onTop ? 'transform translate-x-full' : ' left-0']"
+            >
+              <input
+                type="button"
+                class="absolute opacity-0 w-0 h-0"
+                @click="toggleTop"
+              />
+            </span>
+          </span>
+          <span class="ml-3 text-gray-800 select-none">Always on top</span>
+        </label>
+      </div>
+      <div class="mx-2">
+        <label class="mt-3 inline-flex items-center cursor-pointer">
+          <span class="relative">
+            <span
+              class="block w-10 h-6 rounded-full shadow-inner"
               :class="[checked ? 'bg-green-600' : ' bg-gray-400']"
             ></span>
             <span
@@ -88,11 +109,12 @@
 <script>
 export default {
   name: 'Settings',
-  emits: ['hide-toolbar', 'lock-position', 'zoom-factor'],
+  emits: ['hide-toolbar', 'lock-position', 'zoom-factor', 'on-top'],
   props: ['color'],
   data () {
     return {
       mainColor: this.color,
+      onTop: true,
       checked: false,
       lockPosition: false,
       positions: ['tl', 'tm', 'tr', 'l', 'm', 'r', 'bl', 'bm', 'br'],
@@ -108,10 +130,14 @@ export default {
     }
   },
   methods: {
+    toggleTop () {
+      this.onTop = !this.onTop
+      this.$emit('on-top')
+    },
     check () {
       this.checked = !this.checked
       this.$emit('hide-toolbar')
-      console.log(this.currentPosition)
+      // console.log(this.currentPosition)
     },
     positionCheck () {
       this.lockPosition = !this.lockPosition

@@ -1,5 +1,5 @@
 <template>
-<div class="toolbar flex h-12 w-12 bg-gray-600 items-center justify-center" v-show="minimized">
+<div class="flex h-12 w-12 bg-gray-600 items-center justify-center" :class="[locked ? '': 'toolbar']" v-show="minimized">
   <button class="hover:bg-gray-700 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimized = false">
     <svg class="pointer-events-none w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -26,7 +26,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
       </svg>
       </button>
-      <input class="h-6 focus:outline-none rounded-r w-1/3" v-on:keyup.enter="submit" v-model="url" placeholder="Enter wiki url" />
+      <input class="h-6 focus:outline-none rounded-r w-1/2" v-on:keyup.enter="submit" v-model="url" placeholder="Enter wiki url" />
     </div>
     <div class="flex items-center justify-around w-1/5 bg-gray-500">
       <button class="hover:bg-gray-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="minimized = true">
@@ -34,7 +34,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
         </svg>
       </button>
-      <button class="hover:bg-gray-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="close">
+      <button class="hover:bg-red-600 px-1 py-1 focus:outline-none rounded-full text-white" @click="close">
         <svg class="pointer-events-none w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -84,7 +84,7 @@
             </div>
           </div>
           <div class="bg-gray-100 flex flex-grow">
-            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent" @hide-toolbar="hidetoolbar" @lock-position="lockposition" @zoom-factor="zoom" @change-color="color" :color="mainColor"></component></keep-alive></div>
+            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent" @hide-toolbar="hidetoolbar" @lock-position="lockposition" @zoom-factor="zoom" @change-color="color" @on-top="toggleTop" :color="mainColor"></component></keep-alive></div>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@
 import Notes from './components/Notes.vue'
 import Settings from './components/Settings.vue'
 import Styles from './components/Styles.vue'
-
+// import Back from './assets/icons/back-md.svg'
 export default {
   name: 'App',
   data () {
@@ -151,8 +151,11 @@ export default {
         window.ipcRenderer.send('lock-position', positions[position])
       }
     },
+    toggleTop () {
+      window.ipcRenderer.send('toggle-top')
+    },
     color (e, currentColor) {
-      console.log(currentColor)
+      // console.log(currentColor)
       this.mainColor = currentColor
     },
     zoom (e, zoomFactor) {

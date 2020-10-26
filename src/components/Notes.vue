@@ -71,7 +71,7 @@ export default {
         this.note = ''
         this.title = ''
         this.activeId = -1
-      } else if (this.note.length !== 0 && this.title.length !== 0) {
+      } else if (this.note.length !== 0 || this.title.length !== 0) {
         console.log('no this ran')
         this.notes.push({ id: this.nextNotesId++, title: this.title, text: this.note })
         this.note = ''

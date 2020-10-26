@@ -23,7 +23,7 @@ async function createWindow () {
     height: 400,
     backgroundColor: '#00000000',
     frame: false,
-    alwaysOnTop: false,
+    alwaysOnTop: true,
     transparent: true,
     maximizable: false,
     webPreferences: {
@@ -106,4 +106,9 @@ ipcMain.on('lock-position', (e, arg) => {
   let positionX = Math.floor(arg.x)
   let positionY = Math.floor(arg.y)
   win.setPosition(positionX, positionY)
+})
+
+ipcMain.on('toggle-top', () => {
+  const set = !win.isAlwaysOnTop()
+  win.setAlwaysOnTop(set)
 })
