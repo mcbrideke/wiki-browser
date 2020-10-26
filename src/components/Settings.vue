@@ -89,14 +89,15 @@
 export default {
   name: 'Settings',
   emits: ['hide-toolbar', 'lock-position', 'zoom-factor'],
+  props: ['color'],
   data () {
     return {
+      mainColor: this.color,
       checked: false,
       lockPosition: false,
       positions: ['tl', 'tm', 'tr', 'l', 'm', 'r', 'bl', 'bm', 'br'],
       currentPosition: '',
       zoomFactor: 100,
-      color: 'green',
       minZoom: false,
       maxZoom: false
     }

@@ -27,6 +27,7 @@
 <script>
 export default {
   name: 'Styles',
+  emits: ['change-color'],
   data () {
     return {
       colors: [
@@ -37,6 +38,11 @@ export default {
         'blue'
       ],
       currentColor: ''
+    }
+  },
+  watch: {
+    currentColor () {
+      this.$emit('change-color', this.$event, this.currentColor)
     }
   }
 }

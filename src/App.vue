@@ -18,7 +18,8 @@
         <svg class="pointer-events-none w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
         </svg>
-      </button></div>
+      </button>
+    </div>
     <div class="flex items-center justify-center w-3/5 bg-gray-500">
       <button class="bg-white h-6 px-2 rounded-l focus:outline-none text-gray-500" @click="submit">
        <svg class="pointer-events-none w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -83,7 +84,7 @@
             </div>
           </div>
           <div class="bg-gray-100 flex flex-grow">
-            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent" @hide-toolbar="hidetoolbar" @lock-position="lockposition" @zoom-factor="zoom"></component></keep-alive></div>
+            <div class="w-full h-full flex flex-col" v-show="!collapsed"><keep-alive><component v-bind:is="currentTabComponent" @hide-toolbar="hidetoolbar" @lock-position="lockposition" @zoom-factor="zoom" @change-color="color" :color="mainColor"></component></keep-alive></div>
           </div>
         </div>
       </div>
@@ -104,6 +105,7 @@ export default {
   data () {
     return {
       url: '',
+      mainColor: 'gray',
       collapsed: true,
       canClickThrough: false,
       currentTab: 'Notes',
@@ -148,6 +150,10 @@ export default {
         }
         window.ipcRenderer.send('lock-position', positions[position])
       }
+    },
+    color (e, currentColor) {
+      console.log(currentColor)
+      this.mainColor = currentColor
     },
     zoom (e, zoomFactor) {
       this.$refs.web.setZoomFactor(zoomFactor / 100)
