@@ -1,164 +1,54 @@
 <template>
   <div
-    class="flex h-12 w-12 bg-gray-600 items-center justify-center"
+    class="flex h-12 w-12 bg-gray-500 items-center justify-center"
     :class="[locked ? '' : 'toolbar']"
     v-show="minimized"
   >
     <button
-      class="hover:bg-gray-700 w-8 h-8 px-1 py-1 focus:outline-none rounded-full text-white"
+      class="hover:bg-gray-600 w-8 h-8 px-1 py-1 focus:outline-none rounded-full text-white"
       @click="minimized = false"
     >
       <icon icon="plus"/>
     </button>
   </div>
-  <div class="flex flex-col bg-white h-full" v-show="!minimized">
-    <div
-      class="flex h-10"
-      v-show="!barHidden"
-      :class="[locked ? '' : 'toolbar']"
-    >
-      <div class="flex items-center justify-around w-1/5 bg-gray-500">
-        <button
-          class="rounded-full text-white focus:outline-none w-6 h-6 py-1 px-1"
-          :class="[
-            goBack ? 'hover:bg-gray-600  ' : 'opacity-50 cursor-default',
-          ]"
-          @click="back"
-        >
-         <icon icon="back"/>
-        </button>
-        <button
-          class="focus:outline-none rounded-full text-white w-6 h-6 py-1 px-1"
-          :class="[
-            goForward ? 'hover:bg-gray-600  ' : 'opacity-50 cursor-default',
-          ]"
-          @click="forward"
-        >
-         <icon icon="forward"/>
-        </button>
-      </div>
-      <div class="flex items-center justify-center w-3/5 bg-gray-500">
-        <button
-          class="bg-white h-6 rounded-l w-6 px-1 focus:outline-none text-gray-500"
-          @click="submit"
-        >
-         <icon icon="magnify"/>
-        </button>
-        <input
-          class="h-6 focus:outline-none rounded-r w-1/2"
-          v-on:keyup.enter="submit"
-          v-model="url"
-          placeholder="Enter wiki url"
-        />
-      </div>
-      <div class="flex items-center justify-around w-1/5 bg-gray-500">
-        <button
-          class="hover:bg-gray-600 px-1 py-1 w-6 h-6 focus:outline-none rounded-full text-white"
-          @click="minimized = true"
-        >
-          <icon icon="minimize"/>
-        </button>
-        <button
-          class="hover:bg-red-600 px-1 py-1 w-6 h-6 focus:outline-none rounded-full text-white"
-          @click="close"
-        >
-          <icon icon="exit"/>
-        </button>
-      </div>
-    </div>
+  <div class="flex flex-col h-full" v-show="!minimized">
+    <toolbar
+      :locked="locked"
+      :goBack="goBack"
+      :goForward="goForward"
+      :barHidden="barHidden"
+      @close-win="close"
+      @submit-search="submit"
+      @set-mini="minimized = true"
+      @go-forward="forward"
+      @go-back="back"
+    />
     <div class="flex flex-grow">
       <div class="flex w-full flex-row">
-        <div class="bg-gray-400" :class="[collapsed ? 'w-12' : 'w-48']">
-          <div
-            class="flex"
-            :class="[collapsed ? 'w-full h-full flex-row' : 'h-full flex-col']"
-          >
-            <div
-              class="bg-gray-100 flex items-center justify-around"
-              :class="[collapsed ? 'flex-col w-12' : 'flex-row h-12']"
-            >
-              <div class="">
-                <button
-                  class="hover:bg-gray-300 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-500"
-                  @click="notes"
-                >
-                 <icon icon="note"/>
-                </button>
-              </div>
-              <div class="">
-                <button
-                  class="hover:bg-gray-300 px-1 py-1 focus:outline-none rounded-full text-gray-500"
-                  @click="settings"
-                >
-                  <svg
-                    class="pointer-events-none w-6 h-6"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                    />
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div class="">
-                <button
-                  class="hover:bg-gray-300 px-1 py-1 focus:outline-none w-8 h-8 rounded-full text-gray-500"
-                  @click="styles"
-                >
-                <icon icon="style"/>
-                </button>
-              </div>
-              <div class="">
-                <button
-                  class="hover:bg-gray-300 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-500"
-                  @click="clickThrough"
-                >
-                <icon icon="click"/>
-                </button>
-              </div>
-              <div class="">
-                <button
-                  class="hover:bg-gray-300 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-500"
-                  v-show="!collapsed"
-                  @click="collapsed = true"
-                >
-                 <icon icon="chevL"/>
-                </button>
-              </div>
-            </div>
-            <div class="bg-gray-100 flex flex-grow">
-              <div class="w-full h-full flex flex-col" v-show="!collapsed">
-                <keep-alive
-                  ><component
-                    v-bind:is="currentTabComponent"
-                    @hide-toolbar="hidetoolbar"
-                    @lock-position="lockposition"
-                    @zoom-factor="zoom"
-                    @change-color="color"
-                    @on-top="toggleTop"
-                    :color="mainColor"
-                  ></component
-                ></keep-alive>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="browser-view" class="bg-gray-500 flex flex-grow">
+        <sidebar
+          :collapsed="collapsed"
+          @notes-comp="notes"
+          @settings-comp="settings"
+          @styles-comp="styles"
+          @click-through="clickThrough"
+          @set-collapsed="collapsed = true"
+        >
+          <keep-alive>
+            <component
+            v-bind:is="currentTabComponent"
+            @hide-toolbar="hidetoolbar"
+            @lock-position="lockposition"
+            @zoom-factor="zoom"
+            @change-color="color"
+            @on-top="toggleTop"
+            :color="mainColor"
+            ></component
+          ></keep-alive>
+        </sidebar>
+        <div id="browser-view" class="flex flex-grow">
           <webview
             ref="web"
-            class="inline-flex bg-gray-500 w-full h-full"
+            class="inline-flex w-full h-full"
             src="https://www.github.com/"
           ></webview>
         </div>
@@ -171,7 +61,8 @@ import Notes from './components/Notes.vue'
 import Settings from './components/Settings.vue'
 import Styles from './components/Styles.vue'
 import Icon from './components/Icon.vue'
-// import Back from './assets/icons/back-md.svg'
+import Toolbar from './components/Toolbar.vue'
+import Sidebar from './components/Sidebar.vue'
 export default {
   name: 'App',
   data () {
@@ -277,6 +168,8 @@ export default {
     }
   },
   components: {
+    Toolbar,
+    Sidebar,
     Notes,
     Settings,
     Styles,

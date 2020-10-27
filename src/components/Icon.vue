@@ -10,7 +10,7 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"
-          :d="this.path[this.icon]"
+          :d="path[icon]"
       />
     </svg>
 </template>
@@ -38,9 +38,6 @@ export default {
       type: String,
       required: true
     }
-  },
-  mounted () {
-    console.log(this.path[this.icon])
   }
 }
 </script>
