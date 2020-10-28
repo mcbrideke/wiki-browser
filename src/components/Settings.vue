@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-center text-gray-700 h-8 font-bold tracking-wide select-none">
+  <h1 class="text-center text-gray-100 h-8 font-bold tracking-wide select-none">
     Settings
   </h1>
   <div class="flex flex-grow">
@@ -22,7 +22,7 @@
               />
             </span>
           </span>
-          <span class="ml-3 text-gray-800 select-none">Always on top</span>
+          <span class="ml-3 text-gray-200 select-none">Always on top</span>
         </label>
       </div>
       <div class="mx-2">
@@ -43,7 +43,7 @@
               />
             </span>
           </span>
-          <span class="ml-3 text-gray-800 select-none">Hide toolbar</span>
+          <span class="ml-3 text-gray-200 select-none">Hide toolbar</span>
         </label>
       </div>
       <div class="mx-2">
@@ -64,7 +64,7 @@
               />
             </span>
           </span>
-          <span class="ml-3 text-gray-800 select-none">Lock position</span>
+          <span class="ml-3 text-gray-200 select-none">Lock position</span>
         </label>
       </div>
       <div class="grid grid-cols-3 gap-2 mx-2 w-1/2" id="v-model-radiobutton" v-show="lockPosition">
@@ -93,7 +93,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
           </svg>
         </button>
-        <div class="bg-white w-10 h-6 px-1 text-sm text-gray-800 text-center shadow-inner cursor-default select-none">
+        <div class="bg-white w-10 h-6 px-1 text-sm text-gray-900 text-center shadow-inner cursor-default select-none">
           {{ zoomFactor }}%
         </div>
         <button class="bg-gray-500 rounded-r w-6 h-6 text-white shadow inset-y-0 focus:outline-none" :class="[ maxZoom ? 'pointer-events-none opacity-75' : '']" @click="zoomInc">
@@ -101,7 +101,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </button>
-        <span class="ml-3 text-gray-800 select-none">Zoom</span>
+        <span class="ml-3 text-gray-200 select-none">Zoom</span>
       </div>
     </div>
   </div>

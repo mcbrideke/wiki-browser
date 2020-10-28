@@ -1,5 +1,5 @@
 <template>
-     <div class="bg-gray-100" :class="[collapsed ? 'w-12' : 'w-48']">
+     <div class="bg-gray-700" :class="[collapsed ? 'w-12' : 'w-48']">
           <div
             class="flex"
             :class="[collapsed ? 'w-full h-full flex-row' : 'h-full flex-col']"
@@ -10,7 +10,7 @@
             >
               <div class="">
                 <button
-                  class="hover:bg-gray-300 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-500"
+                  class="hover:bg-gray-500 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-200"
                   @click="$emit('notes-comp')"
                 >
                  <icon icon="note"/>
@@ -18,7 +18,7 @@
               </div>
               <div class="">
                 <button
-                  class="hover:bg-gray-300 px-1 py-1 focus:outline-none rounded-full text-gray-500"
+                  class="hover:bg-gray-500 px-1 py-1 focus:outline-none rounded-full text-gray-200"
                   @click="$emit('settings-comp')"
                 >
                   <svg
@@ -45,7 +45,7 @@
               </div>
               <div class="">
                 <button
-                  class="hover:bg-gray-300 px-1 py-1 focus:outline-none w-8 h-8 rounded-full text-gray-500"
+                  class="hover:bg-gray-500 px-1 py-1 focus:outline-none w-8 h-8 rounded-full text-gray-200"
                   @click="$emit('styles-comp')"
                 >
                 <icon icon="style"/>
@@ -53,7 +53,7 @@
               </div>
               <div class="">
                 <button
-                  class="hover:bg-gray-300 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-500"
+                  class="hover:bg-gray-500 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-200"
                   @click="$emit('click-through')"
                 >
                 <icon icon="click"/>
@@ -61,7 +61,7 @@
               </div>
               <div class="">
                 <button
-                  class="hover:bg-gray-300 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-500"
+                  class="hover:bg-gray-500 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-200"
                   v-show="!collapsed"
                   @click="$emit('set-collapsed')"
                 >
@@ -69,7 +69,7 @@
                 </button>
               </div>
             </div>
-            <div class="bg-gray-100 flex flex-grow">
+            <div class="bg-gray-700 flex flex-grow">
               <div class="w-full h-full flex flex-col" v-show="!collapsed">
                <slot></slot>
               </div>

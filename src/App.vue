@@ -1,11 +1,12 @@
 <template>
   <div
-    class="flex h-12 w-12 bg-gray-500 items-center justify-center"
-    :class="[locked ? '' : 'toolbar']"
+    class="flex h-12 w-12  items-center justify-center"
+    :class="[locked ? `bg-${mainColor}-${currentMode.toolbarBg}` : `bg-${mainColor}-${currentMode.toolbarBg} toolbar`]"
     v-show="minimized"
   >
     <button
       class="hover:bg-gray-600 w-8 h-8 px-1 py-1 focus:outline-none rounded-full text-white"
+      :class="[`hover:bg-${mainColor}-${currentMode.hover} text-${mainColor}-${currentMode.icon}`]"
       @click="minimized = false"
     >
       <icon icon="plus"/>
@@ -40,10 +41,11 @@
             @lock-position="lockposition"
             @zoom-factor="zoom"
             @change-color="color"
+            @change-mode="mode"
             @on-top="toggleTop"
             :color="mainColor"
-            ></component
-          ></keep-alive>
+            ></component>
+          </keep-alive>
         </sidebar>
         <div id="browser-view" class="flex flex-grow">
           <webview
@@ -67,7 +69,21 @@ export default {
   name: 'App',
   data () {
     return {
-      url: '',
+      currentMode: {},
+      theme: {
+        dark: {
+          toolbarBg: '800',
+          sidebarBg: '700',
+          hover: '500',
+          icon: '200'
+        },
+        light: {
+          toolbarBg: '200',
+          sidebarBg: '300',
+          hover: '500',
+          icon: '800'
+        }
+      },
       mainColor: 'gray',
       collapsed: true,
       canClickThrough: false,
@@ -121,6 +137,12 @@ export default {
       // console.log(currentColor)
       this.mainColor = currentColor
     },
+    mode (e, m) {
+      this.currentMode = this.theme[m]
+      console.log(this.mainColor)
+      console.log(m)
+      console.log(this.currentMode)
+    },
     zoom (e, zoomFactor) {
       this.$refs.web.setZoomFactor(zoomFactor / 100)
     },
@@ -156,15 +178,14 @@ export default {
       this.collapsed = false
       this.currentTab = 'Styles'
     },
-    submit () {
+    submit (e, u) {
       const pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!-]))?/
-      if (pattern.test(this.url)) {
-        this.$refs.web.loadURL(this.url)
+      if (pattern.test(u)) {
+        this.$refs.web.loadURL(u)
       } else {
-        const search = 'https://www.google.com/search?q=' + this.url
+        const search = 'https://www.google.com/search?q=' + u
         this.$refs.web.loadURL(search)
       }
-      this.url = ''
     }
   },
   components: {
