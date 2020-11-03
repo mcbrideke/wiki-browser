@@ -1,5 +1,5 @@
 <template>
-     <div class="bg-gray-700" :class="[collapsed ? 'w-12' : 'w-48']">
+     <div :class="[collapsed ? `w-12 bg-${color}-${currentMode.sidebarBg}` : `w-48 bg-${color}-${currentMode.sidebarBg}`]">
           <div
             class="flex"
             :class="[collapsed ? 'w-full h-full flex-row' : 'h-full flex-col']"
@@ -10,7 +10,8 @@
             >
               <div class="">
                 <button
-                  class="hover:bg-gray-500 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-200"
+                  class="px-1 py-1 w-8 h-8 focus:outline-none rounded-full"
+                  :class="[currentComponent === 'Notes' && !collapsed? `text-${color}-${currentMode.icon} bg-${color}-${currentMode.hover} cursor-default` : `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('notes-comp')"
                 >
                  <icon icon="note"/>
@@ -18,7 +19,8 @@
               </div>
               <div class="">
                 <button
-                  class="hover:bg-gray-500 px-1 py-1 focus:outline-none rounded-full text-gray-200"
+                  class=" px-1 py-1 focus:outline-none rounded-full"
+                  :class="[currentComponent === 'Settings' && !collapsed? `text-${color}-${currentMode.icon} bg-${color}-${currentMode.hover} cursor-default` : `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('settings-comp')"
                 >
                   <svg
@@ -45,7 +47,8 @@
               </div>
               <div class="">
                 <button
-                  class="hover:bg-gray-500 px-1 py-1 focus:outline-none w-8 h-8 rounded-full text-gray-200"
+                  class="px-1 py-1 focus:outline-none w-8 h-8 rounded-full"
+                  :class="[currentComponent === 'Styles' && !collapsed? `text-${color}-${currentMode.icon} bg-${color}-${currentMode.hover} cursor-default` : `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('styles-comp')"
                 >
                 <icon icon="style"/>
@@ -53,7 +56,8 @@
               </div>
               <div class="">
                 <button
-                  class="hover:bg-gray-500 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-200"
+                  class="px-1 py-1 w-8 h-8 focus:outline-none rounded-full"
+                  :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('click-through')"
                 >
                 <icon icon="click"/>
@@ -61,7 +65,8 @@
               </div>
               <div class="">
                 <button
-                  class="hover:bg-gray-500 px-1 py-1 w-8 h-8 focus:outline-none rounded-full text-gray-200"
+                  class="px-1 py-1 w-8 h-8 focus:outline-none rounded-full"
+                  :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   v-show="!collapsed"
                   @click="$emit('set-collapsed')"
                 >
@@ -69,7 +74,10 @@
                 </button>
               </div>
             </div>
-            <div class="bg-gray-700 flex flex-grow">
+            <div
+              class="flex flex-grow"
+              :class="[`bg-${color}-${currentMode.sidebarBg}`]"
+            >
               <div class="w-full h-full flex flex-col" v-show="!collapsed">
                <slot></slot>
               </div>
@@ -81,9 +89,27 @@
 import Icon from './Icon.vue'
 export default {
   name: 'Sidebar',
+  data () {
+    return {
+      mainColor: '',
+      mode: ''
+    }
+  },
   props: {
     collapsed: {
       type: Boolean,
+      required: true
+    },
+    color: {
+      type: String,
+      required: true
+    },
+    currentMode: {
+      type: Object,
+      required: true
+    },
+    currentComponent: {
+      type: String,
       required: true
     }
   },

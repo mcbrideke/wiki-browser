@@ -1,23 +1,23 @@
 <template>
    <div
-      class="flex h-10 bg-gray-800"
+      class="flex h-10"
       v-show="!barHidden"
-      :class="[locked ? '' : 'toolbar']"
+      :class="[locked ? `bg-${color}-${currentMode.toolbarBg}` : `bg-${color}-${currentMode.toolbarBg} toolbar`]"
     >
       <div class="flex items-center justify-around w-1/5">
         <button
-          class="rounded-full text-gray-200 focus:outline-none w-6 h-6 py-1 px-1"
+          class="rounded-full focus:outline-none w-6 h-6 py-1 px-1"
           :class="[
-            goBack ? 'hover:bg-gray-500  ' : 'opacity-50 cursor-default',
+            goBack ? `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}` : `text-${color}-${currentMode.icon} opacity-50 cursor-default`,
           ]"
           @click="$emit('go-back')"
         >
          <icon icon="back"/>
         </button>
         <button
-          class="focus:outline-none rounded-full text-gray-200 w-6 h-6 py-1 px-1"
+          class="focus:outline-none rounded-full  w-6 h-6 py-1 px-1"
           :class="[
-            goForward ? 'hover:bg-gray-500  ' : 'opacity-50 cursor-default',
+            goForward ? `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}` : `text-${color}-${currentMode.icon} opacity-50 cursor-default`,
           ]"
           @click="$emit('go-forward')"
         >
@@ -26,13 +26,15 @@
       </div>
       <div class="flex items-center justify-center w-3/5">
         <button
-          class="bg-white h-6 rounded-l w-6 px-1 focus:outline-none text-gray-500"
+          class="bg-white h-6 rounded-l w-6 px-1 focus:outline-none"
+          :class="[`text-${color}-500 border-l hover:bg-${color}-200 border-t border-b border-${color}-500`]"
           @click="search"
         >
          <icon icon="magnify"/>
         </button>
         <input
           class="h-6 focus:outline-none rounded-r w-1/2"
+          :class="[`text-${color}-500 border-r border-t border-b placeholder-${color}-500 border-${color}-500`]"
           v-model="newUrl"
           v-on:keyup.enter="search"
           placeholder="Enter wiki url"
@@ -40,13 +42,15 @@
       </div>
       <div class="flex items-center justify-around w-1/5">
         <button
-          class="hover:bg-gray-500 px-1 py-1 w-6 h-6 focus:outline-none rounded-full text-gray-200"
+          class="px-1 py-1 w-6 h-6 focus:outline-none rounded-full"
+          :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
           @click="$emit('set-mini')"
         >
           <icon icon="minimize"/>
         </button>
         <button
-          class="hover:bg-red-500 px-1 py-1 w-6 h-6 focus:outline-none rounded-full text-gray-200"
+          class="hover:bg-red-500 px-1 py-1 w-6 h-6 focus:outline-none rounded-full"
+          :class="[`text-${color}-${currentMode.icon}`]"
           @click="$emit('close-win')"
         >
           <icon icon="exit"/>
@@ -84,6 +88,14 @@ export default {
     },
     barHidden: {
       type: Boolean,
+      required: true
+    },
+    color: {
+      type: String,
+      required: true
+    },
+    currentMode: {
+      type: Object,
       required: true
     }
   },

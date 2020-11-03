@@ -18,6 +18,8 @@
       :goBack="goBack"
       :goForward="goForward"
       :barHidden="barHidden"
+      :color="mainColor"
+      :currentMode="currentMode"
       @close-win="close"
       @submit-search="submit"
       @set-mini="minimized = true"
@@ -28,6 +30,9 @@
       <div class="flex w-full flex-row">
         <sidebar
           :collapsed="collapsed"
+          :color="mainColor"
+          :currentMode="currentMode"
+          :current-component="currentTabComponent"
           @notes-comp="notes"
           @settings-comp="settings"
           @styles-comp="styles"
@@ -36,14 +41,16 @@
         >
           <keep-alive>
             <component
-            v-bind:is="currentTabComponent"
+            :is="currentTabComponent"
             @hide-toolbar="hidetoolbar"
             @lock-position="lockposition"
             @zoom-factor="zoom"
             @change-color="color"
             @change-mode="mode"
             @on-top="toggleTop"
+            :current-component="currentTabComponent"
             :color="mainColor"
+            :current-mode="currentMode"
             ></component>
           </keep-alive>
         </sidebar>
@@ -69,19 +76,24 @@ export default {
   name: 'App',
   data () {
     return {
-      currentMode: {},
+      currentMode: {
+        toolbarBg: '200',
+        sidebarBg: '300',
+        hover: '500',
+        icon: '700'
+      },
       theme: {
         dark: {
           toolbarBg: '800',
           sidebarBg: '700',
           hover: '500',
-          icon: '200'
+          icon: '300'
         },
         light: {
           toolbarBg: '200',
           sidebarBg: '300',
           hover: '500',
-          icon: '800'
+          icon: '700'
         }
       },
       mainColor: 'gray',
