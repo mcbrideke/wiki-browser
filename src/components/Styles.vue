@@ -24,7 +24,7 @@
           <span class="ml-3 capitalize select-none" :class="[`text-${currentColor}-${currentMode.icon}`]">{{ mode }}</span>
         </label>
       </div>
-    <div class="flex flex-row justify-around pt-4 h-12 w-4/5 ml-2" id="v-model-radiobutton">
+      <div class="flex flex-row justify-around pt-4 h-12 w-4/5 ml-2" id="v-model-radiobutton">
         <div class="w-6 h-6" v-for="n in 5" :key="n">
           <span class="relative">
             <span
@@ -43,12 +43,28 @@
           </span>
         </div>
       </div>
+      <div class="inline-flex mx-2 mt-3">
+        <button class="bg-red-500 rounded-l w-6 h-6 shadow inset-y-0 text-white focus:outline-none hover:bg-opacity-50" :class="[ minopacity ? 'pointer-events-none opacity-75' : '']" @click="opacityDec">
+          <svg class="pointer-events-none w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+          </svg>
+        </button>
+        <div class="bg-white w-10 h-6 px-1 text-sm text-center shadow-inner cursor-default select-none" :class="[`text-${color}-800`]">
+          {{ opacityFactor }}%
+        </div>
+        <button class="bg-green-500 rounded-r w-6 h-6 text-white shadow inset-y-0 focus:outline-none hover:bg-opacity-50" :class="[ maxopacity ? 'pointer-events-none opacity-75' : '']" @click="opacityInc">
+          <svg class="pointer-events-none w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </button>
+        <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Opacity</span>
+      </div>
   </div>
 </template>
 <script>
 export default {
   name: 'Styles',
-  emits: ['change-color', 'change-mode'],
+  emits: ['change-color', 'change-mode', 'opacity-factor'],
   data () {
     return {
       mode: 'light',
@@ -59,13 +75,44 @@ export default {
         'pink',
         'blue'
       ],
-      currentColor: 'gray'
+      currentColor: 'gray',
+      opacityFactor: 100,
+      minopacity: false,
+      maxopacity: false
     }
   },
   methods: {
     changeMode () {
       this.mode === 'light' ? this.mode = 'dark' : this.mode = 'light'
       this.$emit('change-mode', this.$event, this.mode)
+    },
+    opacityInc () {
+      this.minopacity = false
+      if (this.opacityFactor === 90) {
+        this.opacityFactor += 10
+        this.maxopacity = true
+        this.$emit('opacity-factor', this.$event, this.opacityFactor)
+      } else if (this.opacityFactor > 90) {
+        this.maxopacity = true
+      } else {
+        this.opacityFactor += 10
+        this.maxopacity = false
+        this.$emit('opacity-factor', this.$event, this.opacityFactor)
+      }
+    },
+    opacityDec () {
+      this.maxopacity = false
+      if (this.opacityFactor === 20) {
+        this.opacityFactor -= 10
+        this.minopacity = true
+        this.$emit('opacity-factor', this.$event, this.opacityFactor)
+      } else if (this.opacityFactor < 20) {
+        this.minopacity = true
+      } else {
+        this.opacityFactor -= 10
+        this.minopacity = false
+        this.$emit('opacity-factor', this.$event, this.opacityFactor)
+      }
     }
   },
   watch: {

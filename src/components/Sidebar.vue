@@ -1,5 +1,5 @@
 <template>
-     <div :class="[collapsed ? `w-12 bg-${color}-${currentMode.sidebarBg}` : `w-48 bg-${color}-${currentMode.sidebarBg}`]">
+     <div :class="[collapsed ? `w-12 bg-${color}-${currentMode.sidebarBg} opacity-${opacity}` : `w-48 bg-${color}-${currentMode.sidebarBg} opacity-${opacity}`]">
           <div
             class="flex "
             :class="[collapsed ? 'w-full h-full flex-row' : 'h-full flex-col ']"
@@ -94,21 +94,22 @@
 import Icon from './Icon.vue'
 import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
-import 'tippy.js/themes/light-border.css'
 export default {
   name: 'Sidebar',
   mounted () {
-    tippy(this.$refs.notes, { content: 'Notes', theme: 'tomato' })
-    tippy(this.$refs.settings, { content: 'Settings' })
-    tippy(this.$refs.styles, { content: 'Styles' })
-    tippy(this.$refs.click, { content: 'Click Through' })
-    const root = document.documentElement
-    root.style.setProperty('--bg', 'grey')
+    tippy(this.$refs.notes, { content: 'Notes', theme: 'main' })
+    tippy(this.$refs.settings, { content: 'Settings', theme: 'main' })
+    tippy(this.$refs.styles, { content: 'Styles', theme: 'main' })
+    tippy(this.$refs.click, { content: 'Click Through', theme: 'main' })
   },
   computed: {
     userStyle () {
+      console.log(this.$props.color)
+      const root = document.documentElement
+      root.style.setProperty('--bg', `var(--color-${this.$props.color}-${this.$props.currentMode.hover})`)
+      root.style.setProperty('--text', `var(--color-${this.$props.color}-${this.$props.currentMode.icon})`)
       return {
-        '--bg': 'green'
+        '--bg': `--color-${this.$props.color}-500`
       }
     }
   },
@@ -137,6 +138,10 @@ export default {
     currentComponent: {
       type: String,
       required: true
+    },
+    opacity: {
+      type: String,
+      required: true
     }
   },
   components: {
@@ -146,23 +151,15 @@ export default {
 </script>
 <style>
 :root {
-  --bg: grey;
+  --bg: rgb(34, 34, 34);
   --text: white;
 }
-  .tippy-box[data-theme~='tomato'] {
+  .tippy-box[data-theme~='main'] {
     background-color: var(--bg);
     color: var(--text);
+    font-weight: 700;
   }
-  .tippy-box[data-theme~='tomato'][data-placement^='top'] > .tippy-arrow::before {
-    border-top-color: tomato;
-  }
-  .tippy-box[data-theme~='tomato'][data-placement^='bottom'] > .tippy-arrow::before {
-    border-bottom-color: tomato;
-  }
-  .tippy-box[data-theme~='tomato'][data-placement^='left'] > .tippy-arrow::before {
-    border-left-color: tomato;
-  }
-  .tippy-box[data-theme~='tomato'][data-placement^='right'] > .tippy-arrow::before {
-    border-right-color: tomato;
+  .tippy-box[data-theme~='main'][data-placement^='top'] > .tippy-arrow::before {
+    border-top-color: var(--bg);
   }
 </style>

@@ -21,6 +21,7 @@
       :barHidden="barHidden"
       :color="mainColor"
       :currentMode="currentMode"
+      :opacity="setOpacity"
       @close-win="close"
       @submit-search="submit"
       @set-mini="minimized = true"
@@ -33,6 +34,7 @@
         <sidebar
           :collapsed="collapsed"
           :color="mainColor"
+          :opacity="setOpacity"
           :currentMode="currentMode"
           :current-component="currentTabComponent"
           @notes-comp="notes"
@@ -50,13 +52,14 @@
             @change-color="color"
             @change-mode="mode"
             @on-top="toggleTop"
+            @opacity-factor="opacity"
             :current-component="currentTabComponent"
             :color="mainColor"
             :current-mode="currentMode"
             ></component>
           </keep-alive>
         </sidebar>
-        <div id="browser-view" class="flex flex-grow">
+        <div id="browser-view" class="flex flex-grow" :class="[`opacity-${setOpacity}`]">
           <webview
             ref="web"
             class="inline-flex w-full h-full"
@@ -98,6 +101,7 @@ export default {
           icon: '700'
         }
       },
+      setOpacity: '100',
       mainColor: 'gray',
       collapsed: true,
       canClickThrough: false,
@@ -159,6 +163,10 @@ export default {
     },
     zoom (e, zoomFactor) {
       this.$refs.web.setZoomFactor(zoomFactor / 100)
+    },
+    opacity (e, opacityFactor) {
+      // console.log(opacityFactor)
+      this.setOpacity = opacityFactor
     },
     hidetoolbar () {
       this.barHidden = !this.barHidden

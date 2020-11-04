@@ -2,7 +2,7 @@
    <div
       class="flex h-full"
       v-show="!barHidden"
-      :class="[locked ? `bg-${color}-${currentMode.toolbarBg}` : `bg-${color}-${currentMode.toolbarBg} toolbar`]"
+      :class="[locked ? `bg-${color}-${currentMode.toolbarBg} opacity-${opacity}` : `bg-${color}-${currentMode.toolbarBg} toolbar opacity-${opacity}`]"
     >
       <div class="flex items-center justify-around w-1/5">
         <button
@@ -96,6 +96,10 @@ export default {
     },
     currentMode: {
       type: Object,
+      required: true
+    },
+    opacity: {
+      type: String,
       required: true
     }
   },
