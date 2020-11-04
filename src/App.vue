@@ -5,14 +5,15 @@
     v-show="minimized"
   >
     <button
-      class="hover:bg-gray-600 w-8 h-8 px-1 py-1 focus:outline-none rounded-full text-white"
+      class="w-8 h-8 px-1 py-1 focus:outline-none rounded-full"
       :class="[`hover:bg-${mainColor}-${currentMode.hover} text-${mainColor}-${currentMode.icon}`]"
       @click="minimized = false"
     >
       <icon icon="plus"/>
     </button>
   </div>
-  <div class="flex flex-col h-full" v-show="!minimized">
+  <div  class="flex flex-col h-full overflow-hidden" v-show="!minimized">
+    <div class="h-10" id="myButton">
     <toolbar
       :locked="locked"
       :goBack="goBack"
@@ -26,8 +27,9 @@
       @go-forward="forward"
       @go-back="back"
     />
-    <div class="flex flex-grow">
-      <div class="flex w-full flex-row">
+    </div>
+    <div class="flex flex-grow ">
+      <div class="flex w-full flex-row ">
         <sidebar
           :collapsed="collapsed"
           :color="mainColor"
@@ -151,9 +153,9 @@ export default {
     },
     mode (e, m) {
       this.currentMode = this.theme[m]
-      console.log(this.mainColor)
-      console.log(m)
-      console.log(this.currentMode)
+      // console.log(this.mainColor)
+      // console.log(m)
+      // console.log(this.currentMode)
     },
     zoom (e, zoomFactor) {
       this.$refs.web.setZoomFactor(zoomFactor / 100)

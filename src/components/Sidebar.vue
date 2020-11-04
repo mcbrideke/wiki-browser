@@ -1,27 +1,30 @@
 <template>
      <div :class="[collapsed ? `w-12 bg-${color}-${currentMode.sidebarBg}` : `w-48 bg-${color}-${currentMode.sidebarBg}`]">
           <div
-            class="flex"
-            :class="[collapsed ? 'w-full h-full flex-row' : 'h-full flex-col']"
+            class="flex "
+            :class="[collapsed ? 'w-full h-full flex-row' : 'h-full flex-col ']"
           >
             <div
               class=" flex items-center justify-around"
               :class="[collapsed ? 'flex-col w-12' : 'flex-row h-12']"
             >
-              <div class="">
+              <div>
                 <button
                   class="px-1 py-1 w-8 h-8 focus:outline-none rounded-full"
                   :class="[currentComponent === 'Notes' && !collapsed? `text-${color}-${currentMode.icon} bg-${color}-${currentMode.hover} cursor-default` : `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('notes-comp')"
+                  ref="notes"
+                  :style="userStyle"
                 >
-                 <icon icon="note"/>
+                  <icon icon="note"/>
                 </button>
               </div>
-              <div class="">
+              <div>
                 <button
                   class=" px-1 py-1 focus:outline-none rounded-full"
                   :class="[currentComponent === 'Settings' && !collapsed? `text-${color}-${currentMode.icon} bg-${color}-${currentMode.hover} cursor-default` : `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('settings-comp')"
+                  ref="settings"
                 >
                   <svg
                     class="pointer-events-none w-6 h-6"
@@ -45,11 +48,12 @@
                   </svg>
                 </button>
               </div>
-              <div class="">
+              <div>
                 <button
                   class="px-1 py-1 focus:outline-none w-8 h-8 rounded-full"
                   :class="[currentComponent === 'Styles' && !collapsed? `text-${color}-${currentMode.icon} bg-${color}-${currentMode.hover} cursor-default` : `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('styles-comp')"
+                  ref="styles"
                 >
                 <icon icon="style"/>
                 </button>
@@ -59,11 +63,12 @@
                   class="px-1 py-1 w-8 h-8 focus:outline-none rounded-full"
                   :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('click-through')"
+                  ref="click"
                 >
                 <icon icon="click"/>
                 </button>
               </div>
-              <div class="">
+              <div>
                 <button
                   class="px-1 py-1 w-8 h-8 focus:outline-none rounded-full"
                   :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
@@ -87,14 +92,35 @@
 </template>
 <script>
 import Icon from './Icon.vue'
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/themes/light-border.css'
 export default {
   name: 'Sidebar',
-  data () {
-    return {
-      mainColor: '',
-      mode: ''
+  mounted () {
+    tippy(this.$refs.notes, { content: 'Notes', theme: 'tomato' })
+    tippy(this.$refs.settings, { content: 'Settings' })
+    tippy(this.$refs.styles, { content: 'Styles' })
+    tippy(this.$refs.click, { content: 'Click Through' })
+    const root = document.documentElement
+    root.style.setProperty('--bg', 'grey')
+  },
+  computed: {
+    userStyle () {
+      return {
+        '--bg': 'green'
+      }
     }
   },
+  // computed: {
+  //   cssProps() {
+  //     return {
+  //       '--hover-font-size': (this.baseFontSize * 2) + "em",
+  //       '--bg-hover-color': this.bgHoverColor,
+  //       '--hover-content': JSON.stringify(this.hoverContent)
+  //     }
+  //   }
+  // },
   props: {
     collapsed: {
       type: Boolean,
@@ -118,3 +144,25 @@ export default {
   }
 }
 </script>
+<style>
+:root {
+  --bg: grey;
+  --text: white;
+}
+  .tippy-box[data-theme~='tomato'] {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+  .tippy-box[data-theme~='tomato'][data-placement^='top'] > .tippy-arrow::before {
+    border-top-color: tomato;
+  }
+  .tippy-box[data-theme~='tomato'][data-placement^='bottom'] > .tippy-arrow::before {
+    border-bottom-color: tomato;
+  }
+  .tippy-box[data-theme~='tomato'][data-placement^='left'] > .tippy-arrow::before {
+    border-left-color: tomato;
+  }
+  .tippy-box[data-theme~='tomato'][data-placement^='right'] > .tippy-arrow::before {
+    border-right-color: tomato;
+  }
+</style>

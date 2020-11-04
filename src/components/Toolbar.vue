@@ -1,6 +1,6 @@
 <template>
    <div
-      class="flex h-10"
+      class="flex h-full"
       v-show="!barHidden"
       :class="[locked ? `bg-${color}-${currentMode.toolbarBg}` : `bg-${color}-${currentMode.toolbarBg} toolbar`]"
     >

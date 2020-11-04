@@ -24,7 +24,7 @@
           <span class="ml-3 capitalize select-none" :class="[`text-${currentColor}-${currentMode.icon}`]">{{ mode }}</span>
         </label>
       </div>
-   <div class="flex flex-row justify-around pt-4 h-12 w-4/5 ml-2" id="v-model-radiobutton">
+    <div class="flex flex-row justify-around pt-4 h-12 w-4/5 ml-2" id="v-model-radiobutton">
         <div class="w-6 h-6" v-for="n in 5" :key="n">
           <span class="relative">
             <span
