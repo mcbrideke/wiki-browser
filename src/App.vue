@@ -41,6 +41,7 @@
           @settings-comp="settings"
           @styles-comp="styles"
           @click-through="clickThrough"
+          @disable-click-through="disableClickThrough"
           @set-collapsed="collapsed = true"
         >
           <keep-alive>
@@ -191,6 +192,10 @@ export default {
     clickThrough () {
       console.log('cthrough')
       // this.$refs.web.setVerticalScrollBarEnabled(false)
+    },
+    disableClickThrough () {
+      console.log('disable!')
+      window.ipcRenderer.send('disable-cthrough')
     },
     settings () {
       this.collapsed = false

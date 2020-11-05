@@ -63,7 +63,7 @@
                   class="px-1 py-1 w-8 h-8 focus:outline-none rounded-full"
                   :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   @click="$emit('click-through')"
-                  ref="click"
+                  @mouseover="$emit('disable-click-through')"
                 >
                 <icon icon="click"/>
                 </button>
@@ -74,6 +74,7 @@
                   :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   v-show="!collapsed"
                   @click="$emit('set-collapsed')"
+                  ref="clickable"
                 >
                  <icon icon="chevL"/>
                 </button>
@@ -96,11 +97,15 @@ import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 export default {
   name: 'Sidebar',
+  emits: ['disable-click-through'],
   mounted () {
     tippy(this.$refs.notes, { content: 'Notes', theme: 'main' })
     tippy(this.$refs.settings, { content: 'Settings', theme: 'main' })
     tippy(this.$refs.styles, { content: 'Styles', theme: 'main' })
     tippy(this.$refs.click, { content: 'Click Through', theme: 'main' })
+    // this.$refs.clickable.addEventListener('mouseenter', () => {
+    //   this.$emit('disable-click-through')
+    // })
   },
   computed: {
     userStyle () {

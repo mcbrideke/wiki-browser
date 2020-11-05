@@ -38,7 +38,7 @@ async function createWindow () {
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) console.log('')//win.webContents.openDevTools()
+    if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
@@ -111,4 +111,8 @@ ipcMain.on('lock-position', (e, arg) => {
 ipcMain.on('toggle-top', () => {
   const set = !win.isAlwaysOnTop()
   win.setAlwaysOnTop(set)
+  win.setIgnoreMouseEvents(true, { forward: true })
+})
+ipcMain.on('disable-cthrough', () => {
+  win.setIgnoreMouseEvents(false)
 })
