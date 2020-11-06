@@ -99,7 +99,6 @@ export default {
       required: true
     },
     opacity: {
-      type: String,
       required: true
     }
   },

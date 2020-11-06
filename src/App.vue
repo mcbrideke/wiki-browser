@@ -13,7 +13,7 @@
     </button>
   </div>
   <div  class="flex flex-col h-full overflow-hidden" v-show="!minimized">
-    <div class="h-10" id="myButton">
+    <div class="h-10" v-show="!barHidden">
     <toolbar
       :locked="locked"
       :goBack="goBack"
@@ -35,8 +35,9 @@
           :collapsed="collapsed"
           :color="mainColor"
           :opacity="setOpacity"
-          :currentMode="currentMode"
+          :current-mode="currentMode"
           :current-component="currentTabComponent"
+          :tip-active="tipActive"
           @notes-comp="notes"
           @settings-comp="settings"
           @styles-comp="styles"
@@ -53,6 +54,7 @@
             @change-color="color"
             @change-mode="mode"
             @on-top="toggleTop"
+            @toggle-tip="toggleTip"
             @opacity-factor="opacity"
             :current-component="currentTabComponent"
             :color="mainColor"
@@ -64,7 +66,7 @@
           <webview
             ref="web"
             class="inline-flex w-full h-full"
-            src="https://www.github.com/"
+            src="https://www.fandom.com/topics/games"
           ></webview>
         </div>
       </div>
@@ -111,14 +113,22 @@ export default {
       goBack: true,
       goForward: true,
       barHidden: false,
-      locked: false
+      locked: false,
+      currentPosition: 'free',
+      tipActive: true
     }
   },
   mounted () {
+    // console.log(this.tipActive)
     this.$refs.web.addEventListener('did-stop-loading', this.loadstop)
   },
   beforeUnmount () {
     this.$refs.web.removeEventListener('did-stop-loading', this.loadstop)
+  },
+  watch: {
+    barHidden () {
+      this.lockposition(null, this.currentPosition)
+    }
   },
   computed: {
     currentTabComponent: function () {
@@ -127,6 +137,7 @@ export default {
   },
   methods: {
     lockposition (e, position) {
+      this.currentPosition = position
       if (position === 'free') {
         this.locked = false
       } else {
@@ -152,21 +163,21 @@ export default {
     toggleTop () {
       window.ipcRenderer.send('toggle-top')
     },
+    toggleTip () {
+      // console.log('this ran')
+      this.tipActive = !this.tipActive
+      // console.log(this.tipActive)
+    },
     color (e, currentColor) {
-      // console.log(currentColor)
       this.mainColor = currentColor
     },
     mode (e, m) {
       this.currentMode = this.theme[m]
-      // console.log(this.mainColor)
-      // console.log(m)
-      // console.log(this.currentMode)
     },
     zoom (e, zoomFactor) {
       this.$refs.web.setZoomFactor(zoomFactor / 100)
     },
     opacity (e, opacityFactor) {
-      // console.log(opacityFactor)
       this.setOpacity = opacityFactor
     },
     hidetoolbar () {
@@ -190,11 +201,10 @@ export default {
       window.ipcRenderer.send('close-app')
     },
     clickThrough () {
-      console.log('cthrough')
-      // this.$refs.web.setVerticalScrollBarEnabled(false)
+      window.ipcRenderer.send('cthrough')
+      this.collapsed = true
     },
     disableClickThrough () {
-      console.log('disable!')
       window.ipcRenderer.send('disable-cthrough')
     },
     settings () {

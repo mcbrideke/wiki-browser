@@ -59,7 +59,7 @@ export default {
     save () {
       this.list = true
       if (this.activeId !== -1) {
-        console.log('this ran')
+        // console.log('this ran')
         const objIndex = this.notes.findIndex(obj => obj.id === this.activeId)
         const updatedObj = { ...this.notes[objIndex], title: this.title, text: this.note }
         const updatedNotes = [
@@ -72,7 +72,7 @@ export default {
         this.title = ''
         this.activeId = -1
       } else if (this.note.length !== 0 || this.title.length !== 0) {
-        console.log('no this ran')
+        // console.log('no this ran')
         this.notes.push({ id: this.nextNotesId++, title: this.title, text: this.note })
         this.note = ''
         this.title = ''
@@ -85,7 +85,7 @@ export default {
       this.activeId = u.id
     },
     shorten (n) {
-      console.log('meme')
+      // console.log('meme')
       if (n.length > 10) {
         return `${n.substring(1, 10)}...`
       }

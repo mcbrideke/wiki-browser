@@ -1,5 +1,7 @@
 <template>
-     <div :class="[collapsed ? `w-12 bg-${color}-${currentMode.sidebarBg} opacity-${opacity}` : `w-48 bg-${color}-${currentMode.sidebarBg} opacity-${opacity}`]">
+     <div
+      :class="[collapsed ? `w-12 bg-${color}-${currentMode.sidebarBg} opacity-${opacity}` : `w-48 bg-${color}-${currentMode.sidebarBg} opacity-${opacity}`]"
+     >
           <div
             class="flex "
             :class="[collapsed ? 'w-full h-full flex-row' : 'h-full flex-col ']"
@@ -58,12 +60,12 @@
                 <icon icon="style"/>
                 </button>
               </div>
-              <div class="">
+              <div class="" ref="disable">
                 <button
                   class="px-1 py-1 w-8 h-8 focus:outline-none rounded-full"
-                  :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
-                  @click="$emit('click-through')"
-                  @mouseover="$emit('disable-click-through')"
+                  :class="[cthrough ? `text-${color}-${currentMode.icon} bg-${color}-${currentMode.hover} cursor-default` : `text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
+                  @click="clickThrough"
+                  ref="click"
                 >
                 <icon icon="click"/>
                 </button>
@@ -74,7 +76,6 @@
                   :class="[`text-${color}-${currentMode.icon} hover:bg-${color}-${currentMode.hover}`]"
                   v-show="!collapsed"
                   @click="$emit('set-collapsed')"
-                  ref="clickable"
                 >
                  <icon icon="chevL"/>
                 </button>
@@ -97,19 +98,67 @@ import tippy from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 export default {
   name: 'Sidebar',
-  emits: ['disable-click-through'],
+  emits: ['disable-click-through', 'click-through', 'notes-comp', 'settings-comp', 'set-collapsed'],
+  data () {
+    return {
+      cthrough: false,
+      tip: null,
+      clickTip: null,
+      noteTip: null,
+      styleTip: null,
+      settingTip: null
+    }
+  },
   mounted () {
-    tippy(this.$refs.notes, { content: 'Notes', theme: 'main' })
-    tippy(this.$refs.settings, { content: 'Settings', theme: 'main' })
-    tippy(this.$refs.styles, { content: 'Styles', theme: 'main' })
-    tippy(this.$refs.click, { content: 'Click Through', theme: 'main' })
-    // this.$refs.clickable.addEventListener('mouseenter', () => {
-    //   this.$emit('disable-click-through')
-    // })
+    console.log(this.$props.tipActive)
+    const noteTip = tippy(this.$refs.notes, { content: 'Notes', theme: 'main' })
+    const settingTip = tippy(this.$refs.settings, { content: 'Settings', theme: 'main' })
+    const styleTip = tippy(this.$refs.styles, { content: 'Styles', theme: 'main' })
+    const original = tippy(this.$refs.click, { content: 'Click Through', theme: 'main' })
+    const disable = tippy(this.$refs.disable, {
+      content: '<div class="w-5 h-5"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>',
+      allowHTML: true,
+      placement: 'bottom',
+      arrow: false,
+      theme: 'disable',
+      interactive: true,
+      trigger: 'manual'
+    })
+    this.tip = disable
+    this.clickTip = original
+    this.noteTip = noteTip
+    this.styleTip = styleTip
+    this.settingTip = settingTip
+    this.tip.popper.addEventListener('mouseover', () => {
+      this.tip.hide()
+      this.$emit('disable-click-through')
+      this.cthrough = false
+      this.clickTip.setContent('Click Through')
+    })
+  },
+  beforeUnmount () {
+    this.tip.popper.removeEventListener('mouseover', () => {
+      this.tip.hide()
+      this.$emit('disable-click-through')
+      this.cthrough = false
+      this.clickTip.setContent('Click Through')
+    })
+  },
+  watch: {
+    tipActive () {
+      if (!this.$props.tipActive) {
+        this.noteTip.disable()
+        this.settingTip.disable()
+        this.styleTip.disable()
+      } else {
+        this.noteTip.enable()
+        this.settingTip.enable()
+        this.styleTip.enable()
+      }
+    }
   },
   computed: {
     userStyle () {
-      console.log(this.$props.color)
       const root = document.documentElement
       root.style.setProperty('--bg', `var(--color-${this.$props.color}-${this.$props.currentMode.hover})`)
       root.style.setProperty('--text', `var(--color-${this.$props.color}-${this.$props.currentMode.icon})`)
@@ -118,15 +167,16 @@ export default {
       }
     }
   },
-  // computed: {
-  //   cssProps() {
-  //     return {
-  //       '--hover-font-size': (this.baseFontSize * 2) + "em",
-  //       '--bg-hover-color': this.bgHoverColor,
-  //       '--hover-content': JSON.stringify(this.hoverContent)
-  //     }
-  //   }
-  // },
+  methods: {
+    clickThrough () {
+      this.$emit('click-through')
+      this.cthrough = true
+      this.tip.show()
+      this.clickTip.setContent('Hover the icon below to disable')
+      this.clickTip.show()
+    }
+  },
+
   props: {
     collapsed: {
       type: Boolean,
@@ -145,7 +195,9 @@ export default {
       required: true
     },
     opacity: {
-      type: String,
+      required: true
+    },
+    tipActive: {
       required: true
     }
   },
@@ -155,10 +207,10 @@ export default {
 }
 </script>
 <style>
-:root {
-  --bg: rgb(34, 34, 34);
-  --text: white;
-}
+  :root {
+    --bg: rgb(34, 34, 34);
+    --text: white;
+  }
   .tippy-box[data-theme~='main'] {
     background-color: var(--bg);
     color: var(--text);
@@ -166,5 +218,19 @@ export default {
   }
   .tippy-box[data-theme~='main'][data-placement^='top'] > .tippy-arrow::before {
     border-top-color: var(--bg);
+  }
+  .tippy-box[data-theme~='main'][data-placement^='bottom'] > .tippy-arrow::before {
+    border-bottom-color: var(--bg);
+  }
+  .tippy-box[data-theme~='main'][data-placement^='left'] > .tippy-arrow::before {
+    border-left-color: var(--bg);
+  }
+  .tippy-box[data-theme~='main'][data-placement^='right'] > .tippy-arrow::before {
+    border-right-color: var(--bg);
+  }
+   .tippy-box[data-theme~='disable'] {
+    background-color: var(--color-red-500);
+    color: var(--color-white);
+    font-weight: 700;
   }
 </style>

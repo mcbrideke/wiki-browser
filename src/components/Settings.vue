@@ -5,7 +5,7 @@
   <div class="flex flex-grow">
     <div class="flex flex-col">
       <div class="mx-2">
-        <label class="mt-3 inline-flex items-center cursor-pointer">
+        <label class="inline-flex items-center cursor-pointer">
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
@@ -22,19 +22,19 @@
               />
             </span>
           </span>
-          <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Always on top</span>
+          <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Always top</span>
         </label>
       </div>
       <div class="mx-2">
-        <label class="mt-3 inline-flex items-center cursor-pointer">
+        <label class="inline-flex items-center cursor-pointer">
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
-              :class="[checked ? 'bg-green-600' : ' bg-gray-400']"
+              :class="[!checked ? 'bg-green-600' : ' bg-gray-400']"
             ></span>
             <span
               class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
-              :class="[checked ? 'transform translate-x-full' : ' left-0']"
+              :class="[!checked ? 'transform translate-x-full' : ' left-0']"
             >
               <input
                 type="button"
@@ -43,11 +43,32 @@
               />
             </span>
           </span>
-          <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Hide toolbar</span>
+          <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Toolbar</span>
         </label>
       </div>
       <div class="mx-2">
-        <label class="mt-3 inline-flex items-center cursor-pointer">
+        <label class="inline-flex items-center cursor-pointer">
+          <span class="relative">
+            <span
+              class="block w-10 h-6 rounded-full shadow-inner"
+              :class="[tooltip ? 'bg-green-600' : ' bg-gray-400']"
+            ></span>
+            <span
+              class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
+              :class="[tooltip ? 'transform translate-x-full' : ' left-0']"
+            >
+              <input
+                type="button"
+                class="absolute opacity-0 w-0 h-0"
+                @click="toggleTooltip"
+              />
+            </span>
+          </span>
+          <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Tooltips</span>
+        </label>
+      </div>
+      <div class="mx-2">
+        <label class="inline-flex items-center cursor-pointer">
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
@@ -64,10 +85,10 @@
               />
             </span>
           </span>
-          <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Lock position</span>
+          <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Lock</span>
         </label>
       </div>
-      <div class="grid grid-cols-3 gap-2 mx-2 w-1/2" id="v-model-radiobutton" v-show="lockPosition">
+      <div class="grid grid-cols-3 gap-2 mx-3 mb-2 w-1/2" id="v-model-radiobutton" v-show="lockPosition">
         <div class="" v-for="n in 9" :key="n">
           <span class="relative">
             <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
@@ -87,7 +108,7 @@
           </span>
         </div>
       </div>
-      <div class="inline-flex mx-2 mt-3">
+      <div class="inline-flex mx-2">
         <button class="bg-red-500 rounded-l w-6 h-6 shadow inset-y-0 text-white focus:outline-none hover:bg-opacity-50" :class="[ minZoom ? 'pointer-events-none opacity-75' : '']" @click="zoomDec">
           <svg class="pointer-events-none w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -109,7 +130,7 @@
 <script>
 export default {
   name: 'Settings',
-  emits: ['hide-toolbar', 'lock-position', 'zoom-factor', 'on-top'],
+  emits: ['hide-toolbar', 'lock-position', 'zoom-factor', 'on-top', 'toggle-tip'],
   props: ['color', 'currentMode'],
   data () {
     return {
@@ -121,7 +142,8 @@ export default {
       currentPosition: '',
       zoomFactor: 100,
       minZoom: false,
-      maxZoom: false
+      maxZoom: false,
+      tooltip: true
     }
   },
   watch: {
@@ -133,6 +155,10 @@ export default {
     toggleTop () {
       this.onTop = !this.onTop
       this.$emit('on-top')
+    },
+    toggleTooltip () {
+      this.tooltip = !this.tooltip
+      this.$emit('toggle-tip')
     },
     check () {
       this.checked = !this.checked
