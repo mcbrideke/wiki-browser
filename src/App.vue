@@ -7,7 +7,7 @@
     <button
       class="w-8 h-8 px-1 py-1 focus:outline-none rounded-full"
       :class="[`hover:bg-${mainColor}-${currentMode.hover} text-${mainColor}-${currentMode.icon}`]"
-      @click="minimized = false"
+      @click="reset"
     >
       <icon icon="plus"/>
     </button>
@@ -24,7 +24,7 @@
       :opacity="setOpacity"
       @close-win="close"
       @submit-search="submit"
-      @set-mini="minimized = true"
+      @set-mini="minimize"
       @go-forward="forward"
       @go-back="back"
     />
@@ -67,6 +67,7 @@
             ref="web"
             class="inline-flex w-full h-full"
             src="https://www.fandom.com/topics/games"
+            allowpopups="false"
           ></webview>
         </div>
       </div>
@@ -164,9 +165,7 @@ export default {
       window.ipcRenderer.send('toggle-top')
     },
     toggleTip () {
-      // console.log('this ran')
       this.tipActive = !this.tipActive
-      // console.log(this.tipActive)
     },
     color (e, currentColor) {
       this.mainColor = currentColor
@@ -190,8 +189,16 @@ export default {
     back () {
       this.$refs.web.goBack()
     },
+    reset () {
+      this.minimized = false
+      window.ipcRenderer.send('reset')
+    },
     forward () {
       this.$refs.web.goForward()
+    },
+    minimize () {
+      this.minimized = true
+      window.ipcRenderer.send('set-mini')
     },
     notes () {
       this.collapsed = false

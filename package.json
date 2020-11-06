@@ -14,7 +14,10 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@cliqz/adblocker-electron": "^1.18.4",
+    "@cliqz/adblocker-webextension": "^1.18.4",
     "core-js": "~3.6.5",
+    "cross-fetch": "^3.0.6",
     "popper.js": "1.15.0",
     "tippy.js": "^6.2.7",
     "vue": "~3.0.0",

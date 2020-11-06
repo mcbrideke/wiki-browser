@@ -3,6 +3,8 @@
 import { app, protocol, BrowserWindow, BrowserView, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { ElectronBlocker } from '@cliqz/adblocker-electron'
+import fetch from 'cross-fetch';
 const path = require("path")
 const fs = require("fs")
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -35,10 +37,13 @@ async function createWindow () {
       preload: path.join(__dirname, 'preload.js')
     }
   })
+  ElectronBlocker.fromPrebuiltAdsAndTracking(fetch).then((blocker) => {
+    blocker.enableBlockingInSession(win.webContents.session);
+  });
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) console.log('')// win.webContents.openDevTools()
+    if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
@@ -120,4 +125,12 @@ ipcMain.on('cthrough', () => {
 ipcMain.on('disable-cthrough', () => {
   win.setIgnoreMouseEvents(false)
 })
+
+ipcMain.on('set-mini', () => {
+  win.setSize(48, 48)
+})
+ipcMain.on('reset', () => {
+  win.setSize(600, 400)
+})
+
 

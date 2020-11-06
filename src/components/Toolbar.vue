@@ -37,7 +37,7 @@
           :class="[`text-${color}-500 border-r border-t border-b placeholder-${color}-500 border-${color}-500`]"
           v-model="newUrl"
           v-on:keyup.enter="search"
-          placeholder="Enter wiki url"
+          placeholder="Enter a url"
         />
       </div>
       <div class="flex items-center justify-around w-1/5">

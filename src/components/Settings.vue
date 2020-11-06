@@ -3,7 +3,7 @@
     Settings
   </h1>
   <div class="flex flex-grow">
-    <div class="flex flex-col">
+    <div class="flex flex-col overflow-scroll">
       <div class="mx-2">
         <label class="inline-flex items-center cursor-pointer">
           <span class="relative">
@@ -75,7 +75,7 @@
               :class="[lockPosition ? 'bg-green-600' : ' bg-gray-400']"
             ></span>
             <span
-              class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
+              class="absolute block w-4 h-4 mt-1 ml-1  bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
               :class="[lockPosition ? 'transform translate-x-full' : ' left-0']"
             >
               <input
@@ -88,7 +88,7 @@
           <span class="ml-3 select-none" :class="[`text-${color}-${currentMode.icon}`]">Lock</span>
         </label>
       </div>
-      <div class="grid grid-cols-3 gap-2 mx-3 mb-2 w-1/2" id="v-model-radiobutton" v-show="lockPosition">
+      <div class="grid grid-cols-3 gap-1 mx-3 mb-2 w-1/2" id="v-model-radiobutton" v-show="lockPosition">
         <div class="" v-for="n in 9" :key="n">
           <span class="relative">
             <span class="block w-5 h-5 shadow-inner bg-gray-400"></span>
