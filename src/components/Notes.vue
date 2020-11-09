@@ -9,13 +9,13 @@
         </button>
       </div>
       <div class="flex justify-center w-3/5">
-        <h1 class="font-bold tracking-wide" :class="[`text-${color}-${currentMode.icon}`]">Notes</h1>
+        <h1 class="font-bold tracking-wide select-none" :class="[`text-${color}-${currentMode.icon}`]">Notes</h1>
       </div>
     </div>
   </div>
   <div class="flex flex-grow">
     <div class="flex flex-col w-full" v-show="list">
-      <div class="mx-auto" v-if="!notes.length" :class="[`text-${color}-${currentMode.icon}`]">No notes</div>
+      <div class="mx-auto select-none" v-if="!notes.length" :class="[`text-${color}-${currentMode.icon}`]">No notes</div>
       <div class="flex flex-col w-full ml-4 mb-2 cursor-pointer" v-show="list" v-for="item in notes" :key="item.id" @click="updateNote(item)">
         <div>
           <div class="flex h-auto justify-start ml-2 font-bold"  :class="[`text-${color}-${currentMode.icon}`]">
@@ -58,7 +58,7 @@ export default {
   methods: {
     save () {
       this.list = true
-      if (this.activeId !== -1) {
+      if (this.activeId !== -1 && (this.note.length !== 0 || this.title.length !== 0)) {
         // console.log('this ran')
         const objIndex = this.notes.findIndex(obj => obj.id === this.activeId)
         const updatedObj = { ...this.notes[objIndex], title: this.title, text: this.note }
@@ -87,7 +87,7 @@ export default {
     shorten (n) {
       // console.log('meme')
       if (n.length > 10) {
-        return `${n.substring(1, 10)}...`
+        return `${n.substring(0, 10)}...`
       }
       return n
     }

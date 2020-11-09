@@ -3,13 +3,13 @@
     Settings
   </h1>
   <div class="flex flex-grow">
-    <div class="flex flex-col overflow-scroll">
+    <div class="flex flex-col">
       <div class="mx-2">
         <label class="inline-flex items-center cursor-pointer">
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
-              :class="[onTop ? 'bg-green-600' : ' bg-gray-400']"
+              :class="[onTop ? 'bg-black opacity-20 border-2 border-white' : ' bg-gray-500 opacity-40']"
             ></span>
             <span
               class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
@@ -30,7 +30,7 @@
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
-              :class="[!checked ? 'bg-green-600' : ' bg-gray-400']"
+              :class="[!checked ? 'bg-black opacity-20 border-2 border-white' : ' bg-gray-500 opacity-40']"
             ></span>
             <span
               class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
@@ -51,7 +51,7 @@
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
-              :class="[tooltip ? 'bg-green-600' : ' bg-gray-400']"
+              :class="[tooltip ? 'bg-black opacity-20 border-2 border-white' : ' bg-gray-500 opacity-40']"
             ></span>
             <span
               class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
@@ -72,7 +72,7 @@
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
-              :class="[lockPosition ? 'bg-green-600' : ' bg-gray-400']"
+              :class="[lockPosition ? 'bg-black opacity-20 border-2 border-white' : ' bg-gray-500 opacity-40']"
             ></span>
             <span
               class="absolute block w-4 h-4 mt-1 ml-1  bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"

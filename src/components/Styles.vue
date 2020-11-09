@@ -8,11 +8,11 @@
           <span class="relative">
             <span
               class="block w-10 h-6 rounded-full shadow-inner"
-              :class="[mode === 'dark' ? `bg-${currentColor}-800` : `bg-${currentColor}-500`]"
+              :class="[mode === 'dark' ? 'bg-black opacity-20' : 'bg-gray-500 opacity-40']"
             ></span>
             <span
               class="absolute block w-4 h-4 mt-1 ml-1 bg-white rounded-full shadow inset-y-0 focus-within:shadow-outline transition-transform duration-300 ease-in-out"
-              :class="[mode === 'dark' ? 'transform translate-x-full' : ' left-0']"
+              :class="[mode === 'dark' ? 'transform translate-x-full ' : 'left-0']"
             >
               <input
                 type="button"

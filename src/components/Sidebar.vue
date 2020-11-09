@@ -150,10 +150,12 @@ export default {
         this.noteTip.disable()
         this.settingTip.disable()
         this.styleTip.disable()
+        this.clickTip.disable()
       } else {
         this.noteTip.enable()
         this.settingTip.enable()
         this.styleTip.enable()
+        this.clickTip.enable()
       }
     }
   },
