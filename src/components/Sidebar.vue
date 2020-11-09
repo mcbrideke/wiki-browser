@@ -110,7 +110,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$props.tipActive)
     const noteTip = tippy(this.$refs.notes, { content: 'Notes', theme: 'main' })
     const settingTip = tippy(this.$refs.settings, { content: 'Settings', theme: 'main' })
     const styleTip = tippy(this.$refs.styles, { content: 'Styles', theme: 'main' })

@@ -163,7 +163,6 @@ export default {
     check () {
       this.checked = !this.checked
       this.$emit('hide-toolbar')
-      // console.log(this.currentPosition)
     },
     positionCheck () {
       this.lockPosition = !this.lockPosition

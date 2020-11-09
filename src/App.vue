@@ -120,7 +120,6 @@ export default {
     }
   },
   mounted () {
-    // console.log(this.tipActive)
     this.$refs.web.addEventListener('did-stop-loading', this.loadstop)
   },
   beforeUnmount () {
