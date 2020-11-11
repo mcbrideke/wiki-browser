@@ -24,6 +24,7 @@ async function createWindow () {
     width: 600,
     height: 400,
     backgroundColor: '#00000000',
+    icon: path.join(__static, 'icon.png'),
     frame: false,
     alwaysOnTop: true,
     transparent: true,
