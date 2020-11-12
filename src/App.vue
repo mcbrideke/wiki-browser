@@ -63,11 +63,15 @@
           </keep-alive>
         </sidebar>
         <div id="browser-view" class="flex flex-grow" :class="[`opacity-${setOpacity}`]">
+          <div class="flex w-full h-full" v-show="fail">
+            Error loading page...
+          </div>
           <webview
             ref="web"
             class="inline-flex w-full h-full"
             src="https://www.fandom.com/topics/games"
             allowpopups="false"
+            v-show="!fail"
           ></webview>
         </div>
       </div>
@@ -116,14 +120,16 @@ export default {
       barHidden: false,
       locked: false,
       currentPosition: 'free',
-      tipActive: true
+      tipActive: true,
+      fail: false
     }
   },
   mounted () {
-    this.$refs.web.addEventListener('did-stop-loading', this.loadstop)
+    this.$refs.web.addEventListener('did-finish-loading', this.loadstop)
+    // this.$refs.web.addEventListener('did-fail-load', this.loadfail)
   },
   beforeUnmount () {
-    this.$refs.web.removeEventListener('did-stop-loading', this.loadstop)
+    this.$refs.web.removeEventListener('did-finish-loading', this.loadstop)
   },
   watch: {
     barHidden () {
@@ -182,8 +188,13 @@ export default {
       this.barHidden = !this.barHidden
     },
     loadstop () {
+      console.log('call')
       this.goBack = this.$refs.web.canGoBack()
       this.goForward = this.$refs.web.canGoForward()
+      this.fail = false
+    },
+    loadfail () {
+      this.fail = true
     },
     back () {
       this.$refs.web.goBack()
@@ -227,7 +238,7 @@ export default {
         this.$refs.web.loadURL(u)
       } else {
         const search = 'https://www.google.com/search?q=' + u
-        this.$refs.web.loadURL(search)
+        this.$refs.web.loadURL(search).then(() => console.log('succ'), console.log('fail'))
       }
     }
   },
