@@ -26,6 +26,7 @@ html, body {
 }
 .screen {
     display: flex;
+    margin-top: 2rem;
     justify-content: center;
 }
 .screen__pic {
@@ -47,14 +48,18 @@ html, body {
 }
 .features {
     display: flex;
-}
-.features__title {
-    width: 20%;
-}
-.features__title--rotate {
-    transform-origin: 0 0;
-    transform: rotate(90deg);
-    font-size: 1.5rem;
     font-family: 'Inter', sans-serif;
+    margin-left: 20%;
+}
+.features__head {
+    width:25%;
+    font-size: 1.5rem;
+    margin-top: 2rem;
     color:#718096;
+}
+.features__pic {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 30%;
+    height: auto;
+    clip-path: inset(0 25% 0 0);
 }
