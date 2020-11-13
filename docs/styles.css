@@ -1,65 +1,67 @@
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
 @import url('https://rsms.me/inter/inter.css');
+
+:root {
+  --100: #f7fafc;
+  --200: #edf2f7;
+  --300: #e2e8f0;
+  --400: #cbd5e0;
+  --500: #a0aec0;
+  --600: #718096;
+  --700: #4a5568;
+  --800: #2d3748;
+  --900: #1a202c;
+}
 html, body {
     margin: 0;
-    height: 100%;
-    width:100%;
-    font-family: 'Libre Baskerville', serif;
-    background-color: #edf2f7;
+    font-size: 1rem;
+    color: var(--200);
+    background-color: var(--900);
+}
+p {
+    font-family: Inter, sans-serif;
+}
+a {
+    color: var(--400);
 }
 .top {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    margin: 20px auto;
+    max-width: 50rem;
 }
-.top__pic {
-    margin:1rem;
-    height: 150px;
-    width: 150px;
+.main {
+    margin: 0 auto;
+    max-width: 50rem;
+    line-height: 30px;
 }
-.top__text {
-    margin:1rem;
-    font-size: 3rem;
-    color: #2d3748;
+.title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 2rem;
+    letter-spacing: 3px;
 }
-.screen {
-    display: flex;
-    margin-top: 2rem;
-    justify-content: center;
+.heading {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
 }
-.screen__pic {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 2rem;
-    width: 25%;
-    height: auto;
+.logo {
+    margin-top: 20px;  
 }
-.descrip {
-    display: flex;
-    justify-content: center;
+img {
+    margin: 0 auto;
+    max-width: 70%;    
+} 
+#download {
+    width:200px;
+    padding:1rem;
+    margin: 1rem;
+    font-weight: bold;
+    border: 1px solid var(--200);
+    border-radius: 5px;
+    display: block;
+    text-decoration: none;
+    font-family: Inter, sans-serif;
 }
-.descrip__text{
-    width:50%;
-    font-size: 1.5rem;
-    margin-top: 2rem;
-    font-family: 'Inter', sans-serif;
-    color:#718096;
-}
-.features {
-    display: flex;
-    font-family: 'Inter', sans-serif;
-    margin-left: 20%;
-}
-.features__head {
-    width:25%;
-    font-size: 1.5rem;
-    margin-top: 2rem;
-    color:#718096;
-}
-.features__pic {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 30%;
-    height: auto;
-    clip-path: inset(0 25% 0 0);
+#download:hover {
+  color: var(--500);
+  border-color: var(--500);
 }
