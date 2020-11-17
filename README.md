@@ -1,6 +1,9 @@
+![wikibrowserlogo](https://github.com/mcbrideke/wiki-browser/blob/master/docs/icon.png)
 # wikibrowser
 
 wikibrowser is a minimal, floating browser app that offers quick access to reference materials without obstructing the window behind it.
+
+![wikibrowserlogo](https://github.com/mcbrideke/wiki-browser/blob/master/docs/screenshots/1.PNG)
 
 Download wikibrowser from the [releases page]https://github.com/mcbrideke/wiki-browser/releases/tag/v1.0), or learn more on the [website](https://mcbrideke.github.io/wiki-browser/).
 
