@@ -23,6 +23,7 @@ wikibrowser does not currently have:
 * Video optimization
 * Server storage
 * Mac or Linux builds
+* non-windowed mode support
 
 For development:
 
