@@ -15,8 +15,8 @@
 html, body {
     margin: 0;
     font-size: 1rem;
-    color: var(--200);
-    background-color: var(--900);
+    color: var(--800);
+    background-color: var(--200);
 }
 p {
     font-family: Inter, sans-serif;
@@ -27,11 +27,23 @@ a {
 .top {
     margin: 20px auto;
     max-width: 50rem;
+    padding:20px;
 }
 .main {
-    margin: 0 auto;
+    margin:0 auto;
     max-width: 50rem;
     line-height: 30px;
+    padding:20px;
+}
+footer {
+    margin:auto;
+    max-width: 50rem;
+    line-height: 30px;
+    color:var(--800);
+    fill:var(--800);
+    padding:20px;
+    display: flex;
+    align-items: center;
 }
 .title {
     font-family: 'Libre Baskerville', serif;
@@ -48,20 +60,28 @@ a {
 }
 img {
     margin: 0 auto;
-    max-width: 70%;    
-} 
+    max-width: 70%;
+}
+.shadow {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.line {
+    margin-left: 10px;
+}
+
 #download {
     width:200px;
     padding:1rem;
     margin: 1rem;
     font-weight: bold;
-    border: 1px solid var(--200);
+    border: 1px solid var(--600);
+    color: var(--600);
     border-radius: 5px;
     display: block;
     text-decoration: none;
     font-family: Inter, sans-serif;
 }
 #download:hover {
-  color: var(--500);
-  border-color: var(--500);
+  color: var(--700);
+  border-color: var(--700);
 }
